@@ -18,7 +18,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to remove featured media \"%s\"?"
-msgstr "Êtes-vous sûr de vouloir retirer le média à la une \"%s\" ?"
+msgstr "Êtes-vous sûr·e de vouloir retirer le média à la une \"%s\" ?"
 
 msgid "Featured media"
 msgstr "Média à la une"
