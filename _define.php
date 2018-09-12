@@ -18,10 +18,10 @@ $this->registerModule(
     "Manage featured media for entry", // Description
     "Franck Paul",                     // Author
     '0.1',                             // Version
-    array(
-        'requires'    => array(array('core', '2.9')), // Dependencies
-        'permissions' => 'usage,contentadmin,pages',  // Permissions
-        'priority'    => 999,                         // Priority
-        'type'        => 'plugin'                    // Type
-    )
+    [
+        'requires'    => [['core', '2.13']],         // Dependencies
+        'permissions' => 'usage,contentadmin,pages', // Permissions
+        'priority'    => 999,                        // Priority
+        'type'        => 'plugin'                   // Type
+    ]
 );

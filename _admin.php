@@ -13,13 +13,13 @@
 
 if (!defined('DC_CONTEXT_ADMIN')) {return;}
 
-$core->addBehavior('adminPostFormItems', array('featuredMediaAdmin', 'adminPostFormItems'));
-$core->addBehavior('adminPostAfterForm', array('featuredMediaAdmin', 'adminPostAfterForm'));
-$core->addBehavior('adminPostHeaders', array('featuredMediaAdmin', 'postHeaders'));
+$core->addBehavior('adminPostFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
+$core->addBehavior('adminPostAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
+$core->addBehavior('adminPostHeaders', ['featuredMediaAdmin', 'postHeaders']);
 
-$core->addBehavior('adminPageFormItems', array('featuredMediaAdmin', 'adminPostFormItems'));
-$core->addBehavior('adminPageAfterForm', array('featuredMediaAdmin', 'adminPostAfterForm'));
-$core->addBehavior('adminPageHeaders', array('featuredMediaAdmin', 'postHeaders'));
+$core->addBehavior('adminPageFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
+$core->addBehavior('adminPageAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
+$core->addBehavior('adminPageHeaders', ['featuredMediaAdmin', 'postHeaders']);
 
 class featuredMediaAdmin
 {
@@ -49,22 +49,22 @@ class featuredMediaAdmin
                 }
                 $item .=
                 '<div class="media-item s-featuredmedia">' .
-                '<a class="media-icon" href="' . $core->adminurl->get('admin.media.item', array('id' => $f->media_id)) . '">' .
+                '<a class="media-icon" href="' . $core->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '">' .
                 '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '" /></a>' .
                 '<ul>' .
-                '<li><a class="media-link" href="' . $core->adminurl->get('admin.media.item', array('id' => $f->media_id)) . '" ' .
+                '<li><a class="media-link" href="' . $core->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
                 'title="' . $f->basename . '">' . $ftitle . '</a></li>' .
                 '<li>' . $f->media_dtstr . '</li>' .
                 '<li>' . files::size($f->size) . ' - ' .
                 '<a href="' . $f->file_url . '">' . __('open') . '</a>' . '</li>' .
 
                 '<li class="media-action"><a class="featuredmedia-remove" id="featuredmedia-' . $f->media_id . '" ' .
-                'href="' . $core->adminurl->get('admin.post.media', array(
+                'href="' . $core->adminurl->get('admin.post.media', [
                     'post_id'   => $post->post_id,
                     'media_id'  => $f->media_id,
                     'link_type' => 'featured',
                     'remove'    => '1'
-                )) . '">' .
+                ]) . '">' .
                 '<img src="images/trash.png" alt="' . __('remove') . '" /></a>' .
                     '</li>' .
 
@@ -78,7 +78,7 @@ class featuredMediaAdmin
             }
             if (!$nb_media) {
                 $item .=
-                '<p class="s-featuredmedia"><a class="button" href="' . $core->adminurl->get('admin.media', array('post_id' => $post->post_id, 'link_type' => 'featured')) . '">' .
+                '<p class="s-featuredmedia"><a class="button" href="' . $core->adminurl->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
                 __('Add a featured media for this entry') . '</a></p>';
             }
             $sidebar['metas-box']['items']['featuredmedia'] = $item;
@@ -91,10 +91,10 @@ class featuredMediaAdmin
             $core = &$GLOBALS['core'];
             echo
             '<form action="' . $core->adminurl->get('admin.post.media') . '" id="featuredmedia-remove-hide" method="post">' .
-            '<div>' . form::hidden(array('post_id'), $post->post_id) .
-            form::hidden(array('media_id'), '') .
-            form::hidden(array('link_type'), 'featured') .
-            form::hidden(array('remove'), 1) .
+            '<div>' . form::hidden(['post_id'], $post->post_id) .
+            form::hidden(['media_id'], '') .
+            form::hidden(['link_type'], 'featured') .
+            form::hidden(['remove'], 1) .
             $core->formNonce() . '</div></form>';
         }
     }

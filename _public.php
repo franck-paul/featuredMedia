@@ -13,19 +13,19 @@
 
 if (!defined('DC_RC_PATH')) {return;}
 
-$core->tpl->addBlock('FeaturedMedia', array('featuredMediaTpl', 'featuredMedia'));
-$core->tpl->addValue('FeaturedMediaMimeType', array('featuredMediaTpl', 'featuredMediaMimeType'));
-$core->tpl->addValue('FeaturedMediaType', array('featuredMediaTpl', 'featuredMediaType'));
-$core->tpl->addValue('FeaturedMediaFileName', array('featuredMediaTpl', 'featuredMediaFileName'));
-$core->tpl->addValue('FeaturedMediaSize', array('featuredMediaTpl', 'featuredMediaSize'));
-$core->tpl->addValue('FeaturedMediaTitle', array('featuredMediaTpl', 'featuredMediaTitle'));
-$core->tpl->addValue('FeaturedMediaThumbnailURL', array('featuredMediaTpl', 'featuredMediaThumbnailURL'));
-$core->tpl->addValue('FeaturedMediaImageURL', array('featuredMediaTpl', 'featuredMediaImageURL'));
-$core->tpl->addValue('FeaturedMediaURL', array('featuredMediaTpl', 'featuredMediaURL'));
+$core->tpl->addBlock('FeaturedMedia', ['featuredMediaTpl', 'featuredMedia']);
+$core->tpl->addValue('FeaturedMediaMimeType', ['featuredMediaTpl', 'featuredMediaMimeType']);
+$core->tpl->addValue('FeaturedMediaType', ['featuredMediaTpl', 'featuredMediaType']);
+$core->tpl->addValue('FeaturedMediaFileName', ['featuredMediaTpl', 'featuredMediaFileName']);
+$core->tpl->addValue('FeaturedMediaSize', ['featuredMediaTpl', 'featuredMediaSize']);
+$core->tpl->addValue('FeaturedMediaTitle', ['featuredMediaTpl', 'featuredMediaTitle']);
+$core->tpl->addValue('FeaturedMediaThumbnailURL', ['featuredMediaTpl', 'featuredMediaThumbnailURL']);
+$core->tpl->addValue('FeaturedMediaImageURL', ['featuredMediaTpl', 'featuredMediaImageURL']);
+$core->tpl->addValue('FeaturedMediaURL', ['featuredMediaTpl', 'featuredMediaURL']);
 
-$core->tpl->addBlock('FeaturedMediaIf', array('featuredMediaTpl', 'featuredMediaIf'));
+$core->tpl->addBlock('FeaturedMediaIf', ['featuredMediaTpl', 'featuredMediaIf']);
 
-$core->addBehavior('tplIfConditions', array('featuredMediaBehavior', 'tplIfConditions'));
+$core->addBehavior('tplIfConditions', ['featuredMediaBehavior', 'tplIfConditions']);
 
 class featuredMediaTpl
 {
@@ -75,7 +75,7 @@ TPLFM_END;
      */
     public static function featuredMediaIf($attr, $content)
     {
-        $if = array();
+        $if = [];
 
         $operator = isset($attr['operator']) ? dcTemplate::getOperator($attr['operator']) : '&&';
 
