@@ -8,11 +8,7 @@ Implementation sample
 			{{tpl:include src="_audio_player.html"}}
 		</tpl:FeaturedMediaIf>
 		<tpl:FeaturedMediaIf is_video="1">
-        	<tpl:FeaturedMediaIf is_flv="0">
-      			{{tpl:include src="_video_player.html"}}
-	        {{tpl:else}}
-      			{{tpl:include src="_flv_player.html"}}
-            </tpl:FeaturedMediaIf>
+  			{{tpl:include src="_video_player.html"}}
 		</tpl:FeaturedMediaIf>
 		<tpl:FeaturedMediaIf is_image="1">
         	<img src="{{tpl:FeaturedMediaImageURL size="m"}}" alt="{{tpl:FeaturedMediaTitle}}" />

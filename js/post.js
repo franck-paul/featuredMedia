@@ -6,9 +6,9 @@ $(function() {
     // Replace featured media remove links by a POST form submit
     $('a.featuredmedia-remove').click(function() {
       this.href = '';
-      var m_name = $(this).parents('ul').find('li:first>a').attr('title');
+      const m_name = $(this).parents('ul').find('li:first>a').attr('title');
       if (window.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', m_name))) {
-        var f = $('#featuredmedia-remove-hide').get(0);
+        const f = $('#featuredmedia-remove-hide').get(0);
         f.elements.media_id.value = this.id.substring(14);
         f.submit();
       }

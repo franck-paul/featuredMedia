@@ -99,8 +99,15 @@ TPLFM_END;
         }
 
         if (isset($attr['is_video'])) {
+            // Since 2.15 .flv media are no more considered as video (Flash is obsolete)
             $sign = (boolean) $attr['is_video'] ? '==' : '!=';
-            $if[] = '$featured_f->type_prefix ' . $sign . ' "video"';
+            $test = '$featured_f->type_prefix ' . $sign . ' "video"';
+            if ($sign == '==') {
+                $test .= ' && $featured_f->type != "video/x-flv"';
+            } else {
+                $test .= ' || $featured_f->type == "video/x-flv"';
+            }
+            $if[] = $test;
         }
 
         if (isset($attr['is_mp3'])) {
