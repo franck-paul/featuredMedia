@@ -19,9 +19,10 @@ $this->registerModule(
     "Franck Paul",                     // Author
     '0.2',                             // Version
     [
-        'requires'    => [['core', '2.13']],         // Dependencies
-        'permissions' => 'usage,contentadmin,pages', // Permissions
-        'priority'    => 999,                        // Priority
-        'type'        => 'plugin'                   // Type
+        'requires'    => [['core', '2.13']],                             // Dependencies
+        'support'     => 'https://github.com/franck-paul/featuredMedia', // Support URL
+        'permissions' => 'usage,contentadmin,pages',                     // Permissions
+        'priority'    => 999,                                            // Priority
+        'type'        => 'plugin'                                        // Type
     ]
 );

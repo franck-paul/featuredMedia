@@ -1,6 +1,7 @@
 Implementation sample
 =====================
 
+```html
 <!-- # Featured media -->
 <tpl:FeaturedMedia>
 	<div class="post-featured-media" id="featured-media {{tpl:FeaturedMediaType}}">
@@ -15,3 +16,4 @@ Implementation sample
 		</tpl:FeaturedMediaIf>
 	</div>
 </tpl:FeaturedMedia>
+```
