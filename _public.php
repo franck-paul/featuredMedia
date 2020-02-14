@@ -26,6 +26,7 @@ $core->tpl->addValue('FeaturedMediaURL', ['featuredMediaTpl', 'featuredMediaURL'
 $core->tpl->addBlock('FeaturedMediaIf', ['featuredMediaTpl', 'featuredMediaIf']);
 
 $core->addBehavior('tplIfConditions', ['featuredMediaBehavior', 'tplIfConditions']);
+$core->addBehavior('socialMetaMedia', ['featuredMediaBehavior', 'socialMetaMedia']);
 
 class featuredMediaTpl
 {
@@ -230,6 +231,24 @@ class featuredMediaBehavior
         if ($tag == "EntryIf" && isset($attr['has_featured_media'])) {
             $sign = (boolean) $attr['has_featured_media'] ? '' : '!';
             $if[] = $sign . '$_ctx->posts->countMedia(\'featured\')';
+        }
+    }
+
+    public static function socialMetaMedia($media)
+    {
+        global $_ctx, $core;
+
+        if ($_ctx->posts !== null && $core->media) {
+            $featured = new ArrayObject($core->media->getPostMedia($_ctx->posts->post_id, null, "featured"));
+            foreach ($featured as $featured_i => $featured_f) {
+                if ($featured_f->media_image) {
+                    $media['img'] = $featured_f->file_url;
+                    $media['alt'] = $featured_f->media_title;
+                    $media['large'] = $core->blog->settings->socialMeta->photo;
+                    // First attached image found, return
+                    return;
+                }
+            }
         }
     }
 }
