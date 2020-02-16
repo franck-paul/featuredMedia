@@ -27,4 +27,4 @@ msgid "No featured media."
 msgstr "Aucun média à la une."
 
 msgid "Add a featured media for this entry"
-msgstr "Ajouter un média à la une à cette entrée"
+msgstr "Ajouter un média à la une à cette publication"
