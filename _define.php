@@ -17,9 +17,9 @@ $this->registerModule(
     "Featured Media",                  // Name
     "Manage featured media for entry", // Description
     "Franck Paul",                     // Author
-    '0.2',                             // Version
+    '0.3',                             // Version
     [
-        'requires'    => [['core', '2.15']],                             // Dependencies
+        'requires'    => [['core', '2.16']],                             // Dependencies
         'support'     => 'https://github.com/franck-paul/featuredMedia', // Support URL
         'permissions' => 'usage,contentadmin,pages',                     // Permissions
         'priority'    => 999,                                            // Priority

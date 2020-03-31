@@ -27,10 +27,7 @@ class featuredMediaAdmin
     {
         $core = &$GLOBALS['core'];
         return
-        '<script type="text/javascript">' . "\n" .
-        dcPage::jsVar('dotclear.msg.confirm_remove_featuredmedia',
-            __('Are you sure you want to remove featured media "%s"?')) .
-        "</script>\n" .
+        dcPage::jsJson('featuredmedia', ['confirm_remove_featuredmedia' => __('Are you sure you want to remove featured media "%s"?')]) .
         dcPage::jsLoad(dcPage::getPF('featuredMedia/js/post.js'));
     }
 

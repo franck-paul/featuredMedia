@@ -1,10 +1,12 @@
-/*global $, dotclear */
+/*global $, dotclear, getData */
 'use strict';
 
 $(function() {
-  $('#edit-entry').onetabload(function() {
+  Object.assign(dotclear.msg, getData('featuredmedia'));
+
+  $('#edit-entry').on('onetabload', function() {
     // Replace featured media remove links by a POST form submit
-    $('a.featuredmedia-remove').click(function() {
+    $('a.featuredmedia-remove').on('click', function() {
       this.href = '';
       const m_name = $(this).parents('ul').find('li:first>a').attr('title');
       if (window.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', m_name))) {
