@@ -39,22 +39,22 @@ class featuredMediaTpl
      */
     public static function featuredMedia($attr, $content)
     {
-        $res = <<<'TPLFM_TOP'
+        $res = <<<TPLFM_TOP
 <?php
-  if ($_ctx->posts !== null && $core->media) {
-    $_ctx->featured = new ArrayObject($core->media->getPostMedia($_ctx->posts->post_id,null,"featured"));
-    foreach ($_ctx->featured as $featured_i => $featured_f) :
-      $GLOBALS['featured_i'] = $featured_i;
-      $GLOBALS['featured_f'] = $featured_f;
-      $_ctx->file_url = $featured_f->file_url;  // for Flash/HTML5 Players
+  if (\$_ctx->posts !== null && \$core->media) {
+    \$_ctx->featured = new ArrayObject(\$core->media->getPostMedia(\$_ctx->posts->post_id,null,"featured"));
+    foreach (\$_ctx->featured as \$featured_i => \$featured_f) :
+      \$GLOBALS['featured_i'] = \$featured_i;
+      \$GLOBALS['featured_f'] = \$featured_f;
+      \$_ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
 ?>
 TPLFM_TOP;
         $res .= $content;
-        $res .= <<<'TPLFM_END'
+        $res .= <<<TPLFM_END
 <?php
     endforeach;
-    $_ctx->featured = null;
-    unset($featured_i,$featured_f,$_ctx->featured_url);
+    \$_ctx->featured = null;
+    unset(\$featured_i,\$featured_f,\$_ctx->featured_url);
   }
 ?>
 TPLFM_END;
