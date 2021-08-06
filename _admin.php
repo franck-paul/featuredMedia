@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 
 $core->addBehavior('adminPostFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
 $core->addBehavior('adminPostAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
@@ -26,6 +27,7 @@ class featuredMediaAdmin
     public static function postHeaders()
     {
         $core = &$GLOBALS['core'];
+
         return
         dcPage::jsJson('featuredmedia', ['confirm_remove_featuredmedia' => __('Are you sure you want to remove featured media "%s"?')]) .
         dcPage::jsLoad(dcPage::getPF('featuredMedia/js/post.js'));
@@ -44,8 +46,7 @@ class featuredMediaAdmin
                 if (strlen($ftitle) > 18) {
                     $ftitle = substr($ftitle, 0, 16) . '...';
                 }
-                $item .=
-                '<div class="media-item s-featuredmedia">' .
+                $item .= '<div class="media-item s-featuredmedia">' .
                 '<a class="media-icon" href="' . $core->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '">' .
                 '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '" /></a>' .
                 '<ul>' .
@@ -74,8 +75,7 @@ class featuredMediaAdmin
                 $item .= '<p class="form-note s-featuredmedia">' . __('No featured media.') . '</p>';
             }
             if (!$nb_media) {
-                $item .=
-                '<p class="s-featuredmedia"><a class="button" href="' . $core->adminurl->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
+                $item .= '<p class="s-featuredmedia"><a class="button" href="' . $core->adminurl->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
                 __('Add a featured media for this entry') . '</a></p>';
             }
             $sidebar['metas-box']['items']['featuredmedia'] = $item;

@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 $core->tpl->addBlock('FeaturedMedia', ['featuredMediaTpl', 'featuredMedia']);
 $core->tpl->addValue('FeaturedMediaMimeType', ['featuredMediaTpl', 'featuredMediaMimeType']);
@@ -30,7 +31,6 @@ $core->addBehavior('socialMetaMedia', ['featuredMediaBehavior', 'socialMetaMedia
 
 class featuredMediaTpl
 {
-
     /*dtd
     <!ELEMENT tpl:featuredMedia - - -- Post featured media -->
     <!ATTLIST tpl;featuredMedia
@@ -123,9 +123,9 @@ TPLFM_END;
 
         if (count($if) != 0) {
             return '<?php if(' . implode(' ' . $operator . ' ', (array) $if) . ') : ?>' . $content . '<?php endif; ?>';
-        } else {
-            return $content;
         }
+
+        return $content;
     }
 
     /*dtd
@@ -134,6 +134,7 @@ TPLFM_END;
     public static function featuredMediaMimeType($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$featured_f->type') . '; ?>';
     }
 
@@ -143,6 +144,7 @@ TPLFM_END;
     public static function featuredMediaType($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$featured_f->media_type') . '; ?>';
     }
 
@@ -152,6 +154,7 @@ TPLFM_END;
     public static function featuredMediaFileName($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$featured_f->basename') . '; ?>';
     }
 
@@ -167,6 +170,7 @@ TPLFM_END;
         if (!empty($attr['full'])) {
             return '<?php echo ' . sprintf($f, '$featured_f->size') . '; ?>';
         }
+
         return '<?php echo ' . sprintf($f, 'files::size($featured_f->size)') . '; ?>';
     }
 
@@ -176,6 +180,7 @@ TPLFM_END;
     public static function featuredMediaTitle($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$featured_f->media_title') . '; ?>';
     }
 
@@ -185,6 +190,7 @@ TPLFM_END;
     public static function featuredMediaThumbnailURL($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return
         '<?php ' .
         'if (isset($featured_f->media_thumb[\'sq\'])) {' .
@@ -204,6 +210,7 @@ TPLFM_END;
         if (empty($attr['size'])) {
             return self::featuredMediaURL($attr);
         }
+
         return
         '<?php ' .
         'if (isset($featured_f->media_thumb[\'' . $attr['size'] . '\'])) {' .
@@ -220,6 +227,7 @@ TPLFM_END;
     public static function featuredMediaURL($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$featured_f->file_url') . '; ?>';
     }
 }
@@ -228,7 +236,7 @@ class featuredMediaBehavior
 {
     public static function tplIfConditions($tag, $attr, $content, $if)
     {
-        if ($tag == "EntryIf" && isset($attr['has_featured_media'])) {
+        if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (boolean) $attr['has_featured_media'] ? '' : '!';
             $if[] = $sign . '$_ctx->posts->countMedia(\'featured\')';
         }
@@ -239,11 +247,11 @@ class featuredMediaBehavior
         global $_ctx, $core;
 
         if ($_ctx->posts !== null && $core->media) {
-            $featured = new ArrayObject($core->media->getPostMedia($_ctx->posts->post_id, null, "featured"));
+            $featured = new ArrayObject($core->media->getPostMedia($_ctx->posts->post_id, null, 'featured'));
             foreach ($featured as $featured_i => $featured_f) {
                 if ($featured_f->media_image) {
-                    $media['img'] = $featured_f->file_url;
-                    $media['alt'] = $featured_f->media_title;
+                    $media['img']   = $featured_f->file_url;
+                    $media['alt']   = $featured_f->media_title;
                     $media['large'] = $core->blog->settings->socialMeta->photo;
                     // First attached image found, return
                     return;
