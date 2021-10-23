@@ -21,9 +21,12 @@ $this->registerModule(
     '0.4',                             // Version
     [
         'requires'    => [['core', '2.19']],                             // Dependencies
-        'support'     => 'https://github.com/franck-paul/featuredMedia', // Support URL
         'permissions' => 'usage,contentadmin,pages',                     // Permissions
         'priority'    => 999,                                            // Priority
-        'type'        => 'plugin'                                       // Type
+        'type'        => 'plugin',                                       // Type
+
+        'details'    => 'https://open-time.net/?q=featuredMedia',       // Details URL
+        'support'    => 'https://github.com/franck-paul/featuredMedia', // Support URL
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/featuredMedia/main/dcstore.xml'
     ]
 );
