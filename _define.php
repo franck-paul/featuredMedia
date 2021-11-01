@@ -27,6 +27,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=featuredMedia',       // Details URL
         'support'    => 'https://github.com/franck-paul/featuredMedia', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/featuredMedia/main/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/featuredMedia/master/dcstore.xml'
     ]
 );
