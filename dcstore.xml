@@ -1,8 +1,8 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="featuredMedia">
-    <name>Manage featured media for entry</name>
+    <name>Featured Media</name>
     <version>0.4</version>
-    <author>Manage featured media for entry</author>
+    <author>Franck Paul</author>
     <desc>Manage featured media for entry</desc>
     <file>https://github.com/franck-paul/featuredMedia/releases/download/0.4/plugin-featuredMedia-0.4.zip</file>
     <da:dcmin>2.19</da:dcmin>
