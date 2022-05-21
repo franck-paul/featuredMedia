@@ -40,24 +40,24 @@ class featuredMediaTpl
     public static function featuredMedia($attr, $content)
     {
         $res = <<<TPLFM_TOP
-<?php
-  if (\$_ctx->posts !== null && \$core->media) {
-    \$_ctx->featured = new ArrayObject(\$core->media->getPostMedia(\$_ctx->posts->post_id,null,"featured"));
-    foreach (\$_ctx->featured as \$featured_i => \$featured_f) :
-      \$GLOBALS['featured_i'] = \$featured_i;
-      \$GLOBALS['featured_f'] = \$featured_f;
-      \$_ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
-?>
-TPLFM_TOP;
+            <?php
+              if (\$_ctx->posts !== null && \$core->media) {
+                \$_ctx->featured = new ArrayObject(\$core->media->getPostMedia(\$_ctx->posts->post_id,null,"featured"));
+                foreach (\$_ctx->featured as \$featured_i => \$featured_f) :
+                  \$GLOBALS['featured_i'] = \$featured_i;
+                  \$GLOBALS['featured_f'] = \$featured_f;
+                  \$_ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
+            ?>
+            TPLFM_TOP;
         $res .= $content;
         $res .= <<<TPLFM_END
-<?php
-    endforeach;
-    \$_ctx->featured = null;
-    unset(\$featured_i,\$featured_f,\$_ctx->featured_url);
-  }
-?>
-TPLFM_END;
+            <?php
+                endforeach;
+                \$_ctx->featured = null;
+                unset(\$featured_i,\$featured_f,\$_ctx->featured_url);
+              }
+            ?>
+            TPLFM_END;
 
         return $res;
     }
@@ -81,12 +81,12 @@ TPLFM_END;
         $operator = isset($attr['operator']) ? dcTemplate::getOperator($attr['operator']) : '&&';
 
         if (isset($attr['is_image'])) {
-            $sign = (boolean) $attr['is_image'] ? '' : '!';
+            $sign = (bool) $attr['is_image'] ? '' : '!';
             $if[] = $sign . '$featured_f->media_image';
         }
 
         if (isset($attr['has_thumb'])) {
-            $sign = (boolean) $attr['has_thumb'] ? '' : '!';
+            $sign = (bool) $attr['has_thumb'] ? '' : '!';
             $if[] = $sign . 'isset($featured_f->media_thumb[\'sq\'])';
         }
 
@@ -95,13 +95,13 @@ TPLFM_END;
         }
 
         if (isset($attr['is_audio'])) {
-            $sign = (boolean) $attr['is_audio'] ? '==' : '!=';
+            $sign = (bool) $attr['is_audio'] ? '==' : '!=';
             $if[] = '$featured_f->type_prefix ' . $sign . ' "audio"';
         }
 
         if (isset($attr['is_video'])) {
             // Since 2.15 .flv media are no more considered as video (Flash is obsolete)
-            $sign = (boolean) $attr['is_video'] ? '==' : '!=';
+            $sign = (bool) $attr['is_video'] ? '==' : '!=';
             $test = '$featured_f->type_prefix ' . $sign . ' "video"';
             if ($sign == '==') {
                 $test .= ' && $featured_f->type != "video/x-flv"';
@@ -112,12 +112,12 @@ TPLFM_END;
         }
 
         if (isset($attr['is_mp3'])) {
-            $sign = (boolean) $attr['is_mp3'] ? '==' : '!=';
+            $sign = (bool) $attr['is_mp3'] ? '==' : '!=';
             $if[] = '$featured_f->type ' . $sign . ' "audio/mpeg3"';
         }
 
         if (isset($attr['is_flv'])) {
-            $sign = (boolean) $attr['is_flv'] ? '==' : '!=';
+            $sign = (bool) $attr['is_flv'] ? '==' : '!=';
             $if[] = '$featured_f->type ' . $sign . ' "video/x-flv"';
         }
 
@@ -192,11 +192,15 @@ TPLFM_END;
         $f = $GLOBALS['core']->tpl->getFilters($attr);
 
         return
-        '<?php ' .
-        'if (isset($featured_f->media_thumb[\'sq\'])) {' .
-        'echo ' . sprintf($f, '$featured_f->media_thumb[\'sq\']') . ';' .
-            '}' .
-            '?>';
+        '<?php ' . "\n" .
+        'if (isset($featured_f->media_thumb[\'sq\'])) {' . "\n" .
+        '   $url = $featured_f->media_thumb[\'sq\']);' . "\n" .
+        '   if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
+        '       $url = substr($url, strlen($core->blog->host));' . "\n" .
+        '   }' . "\n" .
+        '   echo ' . sprintf($f, '$url') . ';' . "\n" .
+        '}' .
+        '?>';
     }
 
     /*dtd
@@ -212,13 +216,17 @@ TPLFM_END;
         }
 
         return
-        '<?php ' .
-        'if (isset($featured_f->media_thumb[\'' . $attr['size'] . '\'])) {' .
-        'echo ' . sprintf($f, '$featured_f->media_thumb[\'' . $attr['size'] . '\']') . ';' .
-        '} else {' .
-        'echo ' . sprintf($f, '$featured_f->file_url') . ';' .
-            '}' .
-            '?>';
+        '<?php ' . "\n" .
+        'if (isset($featured_f->media_thumb[\'' . $attr['size'] . '\'])) {' . "\n" .
+        '   $url = $featured_f->media_thumb[\'' . $attr['size'] . '\'];' . "\n" .
+        '} else {' . "\n" .
+        '   $url = $featured_f->file_url;' . "\n" .
+        '}' . "\n" .
+        'if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
+        '   $url = substr($url, strlen($core->blog->host));' . "\n" .
+        '}' . "\n" .
+        'echo ' . sprintf($f, '$url') . ';' . "\n" .
+        '?>';
     }
 
     /*dtd
@@ -228,7 +236,14 @@ TPLFM_END;
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$featured_f->file_url') . '; ?>';
+        return
+        '<?php ' . "\n" .
+        '$url = $featured_f->file_url;' . "\n" .
+        'if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
+        '   $url = substr($url, strlen($core->blog->host));' . "\n" .
+        '}' . "\n" .
+        'echo ' . sprintf($f, '$featured_f->file_url') . ';' . "\n" .
+        '?>';
     }
 }
 
@@ -237,7 +252,7 @@ class featuredMediaBehavior
     public static function tplIfConditions($tag, $attr, $content, $if)
     {
         if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
-            $sign = (boolean) $attr['has_featured_media'] ? '' : '!';
+            $sign = (bool) $attr['has_featured_media'] ? '' : '!';
             $if[] = $sign . '$_ctx->posts->countMedia(\'featured\')';
         }
     }

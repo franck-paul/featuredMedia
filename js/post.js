@@ -1,10 +1,10 @@
 /*global $, dotclear */
 'use strict';
 
-$(function () {
+$(() => {
   Object.assign(dotclear.msg, dotclear.getData('featuredmedia'));
 
-  $('#edit-entry').on('onetabload', function () {
+  $('#edit-entry').on('onetabload', () => {
     // Replace featured media remove links by a POST form submit
     $('a.featuredmedia-remove').on('click', function () {
       this.href = '';

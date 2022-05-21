@@ -26,11 +26,9 @@ class featuredMediaAdmin
 {
     public static function postHeaders()
     {
-        $core = &$GLOBALS['core'];
-
         return
         dcPage::jsJson('featuredmedia', ['confirm_remove_featuredmedia' => __('Are you sure you want to remove featured media "%s"?')]) .
-        dcPage::jsLoad(dcPage::getPF('featuredMedia/js/post.js'));
+        dcPage::jsModuleLoad('featuredMedia/js/post.js');
     }
 
     public static function adminPostFormItems($main, $sidebar, $post)
@@ -61,7 +59,7 @@ class featuredMediaAdmin
                     'post_id'   => $post->post_id,
                     'media_id'  => $f->media_id,
                     'link_type' => 'featured',
-                    'remove'    => '1'
+                    'remove'    => '1',
                 ]) . '">' .
                 '<img src="images/trash.png" alt="' . __('remove') . '" /></a>' .
                     '</li>' .
