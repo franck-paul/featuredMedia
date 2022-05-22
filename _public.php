@@ -242,7 +242,7 @@ class featuredMediaTpl
         'if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
         '   $url = substr($url, strlen($core->blog->host));' . "\n" .
         '}' . "\n" .
-        'echo ' . sprintf($f, '$featured_f->file_url') . ';' . "\n" .
+        'echo ' . sprintf($f, '$url') . ';' . "\n" .
         '?>';
     }
 }
