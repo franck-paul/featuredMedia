@@ -14,13 +14,13 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-$core->addBehavior('adminPostFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
-$core->addBehavior('adminPostAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
-$core->addBehavior('adminPostHeaders', ['featuredMediaAdmin', 'postHeaders']);
+dcCore::app()->addBehavior('adminPostFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
+dcCore::app()->addBehavior('adminPostAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
+dcCore::app()->addBehavior('adminPostHeaders', ['featuredMediaAdmin', 'postHeaders']);
 
-$core->addBehavior('adminPageFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
-$core->addBehavior('adminPageAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
-$core->addBehavior('adminPageHeaders', ['featuredMediaAdmin', 'postHeaders']);
+dcCore::app()->addBehavior('adminPageFormItems', ['featuredMediaAdmin', 'adminPostFormItems']);
+dcCore::app()->addBehavior('adminPageAfterForm', ['featuredMediaAdmin', 'adminPostAfterForm']);
+dcCore::app()->addBehavior('adminPageHeaders', ['featuredMediaAdmin', 'postHeaders']);
 
 class featuredMediaAdmin
 {
@@ -34,8 +34,7 @@ class featuredMediaAdmin
     public static function adminPostFormItems($main, $sidebar, $post)
     {
         if ($post !== null) {
-            $core       = &$GLOBALS['core'];
-            $post_media = $core->media->getPostMedia($post->post_id, null, 'featured');
+            $post_media = dcCore::app()->media->getPostMedia($post->post_id, null, 'featured');
             $nb_media   = count($post_media);
             $title      = __('Featured media');
             $item       = '<h5 class="clear s-featuredmedia">' . $title . '</h5>';
@@ -45,17 +44,17 @@ class featuredMediaAdmin
                     $ftitle = substr($ftitle, 0, 16) . '...';
                 }
                 $item .= '<div class="media-item s-featuredmedia">' .
-                '<a class="media-icon" href="' . $core->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '">' .
+                '<a class="media-icon" href="' . dcCore::app()->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '">' .
                 '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '" /></a>' .
                 '<ul>' .
-                '<li><a class="media-link" href="' . $core->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
+                '<li><a class="media-link" href="' . dcCore::app()->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
                 'title="' . $f->basename . '">' . $ftitle . '</a></li>' .
                 '<li>' . $f->media_dtstr . '</li>' .
                 '<li>' . files::size($f->size) . ' - ' .
                 '<a href="' . $f->file_url . '">' . __('open') . '</a>' . '</li>' .
 
                 '<li class="media-action"><a class="featuredmedia-remove" id="featuredmedia-' . $f->media_id . '" ' .
-                'href="' . $core->adminurl->get('admin.post.media', [
+                'href="' . dcCore::app()->adminurl->get('admin.post.media', [
                     'post_id'   => $post->post_id,
                     'media_id'  => $f->media_id,
                     'link_type' => 'featured',
@@ -73,7 +72,7 @@ class featuredMediaAdmin
                 $item .= '<p class="form-note s-featuredmedia">' . __('No featured media.') . '</p>';
             }
             if (!$nb_media) {
-                $item .= '<p class="s-featuredmedia"><a class="button" href="' . $core->adminurl->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
+                $item .= '<p class="s-featuredmedia"><a class="button" href="' . dcCore::app()->adminurl->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
                 __('Add a featured media for this entry') . '</a></p>';
             }
             $sidebar['metas-box']['items']['featuredmedia'] = $item;
@@ -83,14 +82,13 @@ class featuredMediaAdmin
     public static function adminPostAfterForm($post)
     {
         if ($post !== null) {
-            $core = &$GLOBALS['core'];
             echo
-            '<form action="' . $core->adminurl->get('admin.post.media') . '" id="featuredmedia-remove-hide" method="post">' .
+            '<form action="' . dcCore::app()->adminurl->get('admin.post.media') . '" id="featuredmedia-remove-hide" method="post">' .
             '<div>' . form::hidden(['post_id'], $post->post_id) .
             form::hidden(['media_id'], '') .
             form::hidden(['link_type'], 'featured') .
             form::hidden(['remove'], 1) .
-            $core->formNonce() . '</div></form>';
+            dcCore::app()->formNonce() . '</div></form>';
         }
     }
 }

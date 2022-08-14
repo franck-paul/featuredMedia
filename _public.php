@@ -14,20 +14,20 @@ if (!defined('DC_RC_PATH')) {
     return;
 }
 
-$core->tpl->addBlock('FeaturedMedia', ['featuredMediaTpl', 'featuredMedia']);
-$core->tpl->addValue('FeaturedMediaMimeType', ['featuredMediaTpl', 'featuredMediaMimeType']);
-$core->tpl->addValue('FeaturedMediaType', ['featuredMediaTpl', 'featuredMediaType']);
-$core->tpl->addValue('FeaturedMediaFileName', ['featuredMediaTpl', 'featuredMediaFileName']);
-$core->tpl->addValue('FeaturedMediaSize', ['featuredMediaTpl', 'featuredMediaSize']);
-$core->tpl->addValue('FeaturedMediaTitle', ['featuredMediaTpl', 'featuredMediaTitle']);
-$core->tpl->addValue('FeaturedMediaThumbnailURL', ['featuredMediaTpl', 'featuredMediaThumbnailURL']);
-$core->tpl->addValue('FeaturedMediaImageURL', ['featuredMediaTpl', 'featuredMediaImageURL']);
-$core->tpl->addValue('FeaturedMediaURL', ['featuredMediaTpl', 'featuredMediaURL']);
+dcCore::app()->tpl->addBlock('FeaturedMedia', ['featuredMediaTpl', 'featuredMedia']);
+dcCore::app()->tpl->addValue('FeaturedMediaMimeType', ['featuredMediaTpl', 'featuredMediaMimeType']);
+dcCore::app()->tpl->addValue('FeaturedMediaType', ['featuredMediaTpl', 'featuredMediaType']);
+dcCore::app()->tpl->addValue('FeaturedMediaFileName', ['featuredMediaTpl', 'featuredMediaFileName']);
+dcCore::app()->tpl->addValue('FeaturedMediaSize', ['featuredMediaTpl', 'featuredMediaSize']);
+dcCore::app()->tpl->addValue('FeaturedMediaTitle', ['featuredMediaTpl', 'featuredMediaTitle']);
+dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', ['featuredMediaTpl', 'featuredMediaThumbnailURL']);
+dcCore::app()->tpl->addValue('FeaturedMediaImageURL', ['featuredMediaTpl', 'featuredMediaImageURL']);
+dcCore::app()->tpl->addValue('FeaturedMediaURL', ['featuredMediaTpl', 'featuredMediaURL']);
 
-$core->tpl->addBlock('FeaturedMediaIf', ['featuredMediaTpl', 'featuredMediaIf']);
+dcCore::app()->tpl->addBlock('FeaturedMediaIf', ['featuredMediaTpl', 'featuredMediaIf']);
 
-$core->addBehavior('tplIfConditions', ['featuredMediaBehavior', 'tplIfConditions']);
-$core->addBehavior('socialMetaMedia', ['featuredMediaBehavior', 'socialMetaMedia']);
+dcCore::app()->addBehavior('tplIfConditions', ['featuredMediaBehavior', 'tplIfConditions']);
+dcCore::app()->addBehavior('socialMetaMedia', ['featuredMediaBehavior', 'socialMetaMedia']);
 
 class featuredMediaTpl
 {
@@ -41,20 +41,20 @@ class featuredMediaTpl
     {
         $res = <<<TPLFM_TOP
             <?php
-              if (\$_ctx->posts !== null && \$core->media) {
-                \$_ctx->featured = new ArrayObject(\$core->media->getPostMedia(\$_ctx->posts->post_id,null,"featured"));
-                foreach (\$_ctx->featured as \$featured_i => \$featured_f) :
+              if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
+                dcCore::app()->ctx->featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id,null,"featured"));
+                foreach (dcCore::app()->ctx->featured as \$featured_i => \$featured_f) :
                   \$GLOBALS['featured_i'] = \$featured_i;
                   \$GLOBALS['featured_f'] = \$featured_f;
-                  \$_ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
+                  dcCore::app()->ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
             ?>
             TPLFM_TOP;
         $res .= $content;
         $res .= <<<TPLFM_END
             <?php
                 endforeach;
-                \$_ctx->featured = null;
-                unset(\$featured_i,\$featured_f,\$_ctx->featured_url);
+                dcCore::app()->ctx->featured = null;
+                unset(\$featured_i,\$featured_f,dcCore::app()->ctx->featured_url);
               }
             ?>
             TPLFM_END;
@@ -133,7 +133,7 @@ class featuredMediaTpl
      */
     public static function featuredMediaMimeType($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->type') . '; ?>';
     }
@@ -143,7 +143,7 @@ class featuredMediaTpl
      */
     public static function featuredMediaType($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->media_type') . '; ?>';
     }
@@ -153,7 +153,7 @@ class featuredMediaTpl
      */
     public static function featuredMediaFileName($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->basename') . '; ?>';
     }
@@ -166,7 +166,7 @@ class featuredMediaTpl
      */
     public static function featuredMediaSize($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
         if (!empty($attr['full'])) {
             return '<?php echo ' . sprintf($f, '$featured_f->size') . '; ?>';
         }
@@ -179,7 +179,7 @@ class featuredMediaTpl
      */
     public static function featuredMediaTitle($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->media_title') . '; ?>';
     }
@@ -189,14 +189,14 @@ class featuredMediaTpl
      */
     public static function featuredMediaThumbnailURL($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
         return
         '<?php ' . "\n" .
         'if (isset($featured_f->media_thumb[\'sq\'])) {' . "\n" .
         '   $url = $featured_f->media_thumb[\'sq\']);' . "\n" .
-        '   if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
-        '       $url = substr($url, strlen($core->blog->host));' . "\n" .
+        '   if (substr($url, 0, strlen(dcCore::app()->blog->host)) === dcCore::app()->blog->host) {' . "\n" .
+        '       $url = substr($url, strlen(dcCore::app()->blog->host));' . "\n" .
         '   }' . "\n" .
         '   echo ' . sprintf($f, '$url') . ';' . "\n" .
         '}' .
@@ -210,7 +210,7 @@ class featuredMediaTpl
      */
     public static function featuredMediaImageURL($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
         if (empty($attr['size'])) {
             return self::featuredMediaURL($attr);
         }
@@ -222,8 +222,8 @@ class featuredMediaTpl
         '} else {' . "\n" .
         '   $url = $featured_f->file_url;' . "\n" .
         '}' . "\n" .
-        'if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
-        '   $url = substr($url, strlen($core->blog->host));' . "\n" .
+        'if (substr($url, 0, strlen(dcCore::app()->blog->host)) === dcCore::app()->blog->host) {' . "\n" .
+        '   $url = substr($url, strlen(dcCore::app()->blog->host));' . "\n" .
         '}' . "\n" .
         'echo ' . sprintf($f, '$url') . ';' . "\n" .
         '?>';
@@ -234,13 +234,13 @@ class featuredMediaTpl
      */
     public static function featuredMediaURL($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
         return
         '<?php ' . "\n" .
         '$url = $featured_f->file_url;' . "\n" .
-        'if (substr($url, 0, strlen($core->blog->host)) === $core->blog->host) {' . "\n" .
-        '   $url = substr($url, strlen($core->blog->host));' . "\n" .
+        'if (substr($url, 0, strlen(dcCore::app()->blog->host)) === dcCore::app()->blog->host) {' . "\n" .
+        '   $url = substr($url, strlen(dcCore::app()->blog->host));' . "\n" .
         '}' . "\n" .
         'echo ' . sprintf($f, '$url') . ';' . "\n" .
         '?>';
@@ -253,21 +253,19 @@ class featuredMediaBehavior
     {
         if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (bool) $attr['has_featured_media'] ? '' : '!';
-            $if[] = $sign . '$_ctx->posts->countMedia(\'featured\')';
+            $if[] = $sign . 'dcCore::app()->ctx->posts->countMedia(\'featured\')';
         }
     }
 
     public static function socialMetaMedia($media)
     {
-        global $_ctx, $core;
-
-        if ($_ctx->posts !== null && $core->media) {
-            $featured = new ArrayObject($core->media->getPostMedia($_ctx->posts->post_id, null, 'featured'));
+        if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
+            $featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id, null, 'featured'));
             foreach ($featured as $featured_i => $featured_f) {
                 if ($featured_f->media_image) {
                     $media['img']   = $featured_f->file_url;
                     $media['alt']   = $featured_f->media_title;
-                    $media['large'] = $core->blog->settings->socialMeta->photo;
+                    $media['large'] = dcCore::app()->blog->settings->socialMeta->photo;
                     // First attached image found, return
                     return;
                 }
