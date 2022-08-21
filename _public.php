@@ -44,8 +44,8 @@ class featuredMediaTpl
               if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
                 dcCore::app()->ctx->featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id,null,"featured"));
                 foreach (dcCore::app()->ctx->featured as \$featured_i => \$featured_f) :
-                  \$GLOBALS['featured_i'] = \$featured_i;
-                  \$GLOBALS['featured_f'] = \$featured_f;
+                  dcCore::app()->ctx->featured_i = \$featured_i;
+                  dcCore::app()->ctx->featured_f = \$featured_f;
                   dcCore::app()->ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
             ?>
             TPLFM_TOP;
@@ -54,7 +54,7 @@ class featuredMediaTpl
             <?php
                 endforeach;
                 dcCore::app()->ctx->featured = null;
-                unset(\$featured_i,\$featured_f,dcCore::app()->ctx->featured_url);
+                unset(dcCore::app()->ctx->featured_i,dcCore::app()->ctx->featured_f,dcCore::app()->ctx->featured_url);
               }
             ?>
             TPLFM_END;
