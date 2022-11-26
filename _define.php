@@ -15,18 +15,22 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'Featured Media',                  // Name
-    'Manage featured media for entry', // Description
-    'Franck Paul',                     // Author
-    '0.5',
+    'Featured Media',
+    'Manage featured media for entry',
+    'Franck Paul',
+    '0.6',
     [
-        'requires'    => [['core', '2.23']],                             // Dependencies
-        'permissions' => 'usage,contentadmin,pages',                     // Permissions
-        'priority'    => 999,                                            // Priority
-        'type'        => 'plugin',                                       // Type
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_USAGE,
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+            dcPages::PERMISSION_PAGES,
+        ]),
+        'priority' => 999,
+        'type'     => 'plugin',
 
-        'details'    => 'https://open-time.net/?q=featuredMedia',       // Details URL
-        'support'    => 'https://github.com/franck-paul/featuredMedia', // Support URL
+        'details'    => 'https://open-time.net/?q=featuredMedia',
+        'support'    => 'https://github.com/franck-paul/featuredMedia',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/featuredMedia/master/dcstore.xml',
     ]
 );

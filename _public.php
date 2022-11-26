@@ -14,21 +14,6 @@ if (!defined('DC_RC_PATH')) {
     return;
 }
 
-dcCore::app()->tpl->addBlock('FeaturedMedia', ['featuredMediaTpl', 'featuredMedia']);
-dcCore::app()->tpl->addValue('FeaturedMediaMimeType', ['featuredMediaTpl', 'featuredMediaMimeType']);
-dcCore::app()->tpl->addValue('FeaturedMediaType', ['featuredMediaTpl', 'featuredMediaType']);
-dcCore::app()->tpl->addValue('FeaturedMediaFileName', ['featuredMediaTpl', 'featuredMediaFileName']);
-dcCore::app()->tpl->addValue('FeaturedMediaSize', ['featuredMediaTpl', 'featuredMediaSize']);
-dcCore::app()->tpl->addValue('FeaturedMediaTitle', ['featuredMediaTpl', 'featuredMediaTitle']);
-dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', ['featuredMediaTpl', 'featuredMediaThumbnailURL']);
-dcCore::app()->tpl->addValue('FeaturedMediaImageURL', ['featuredMediaTpl', 'featuredMediaImageURL']);
-dcCore::app()->tpl->addValue('FeaturedMediaURL', ['featuredMediaTpl', 'featuredMediaURL']);
-
-dcCore::app()->tpl->addBlock('FeaturedMediaIf', ['featuredMediaTpl', 'featuredMediaIf']);
-
-dcCore::app()->addBehavior('tplIfConditions', ['featuredMediaBehavior', 'tplIfConditions']);
-dcCore::app()->addBehavior('socialMetaMedia', ['featuredMediaBehavior', 'socialMetaMedia']);
-
 class featuredMediaTpl
 {
     /*dtd
@@ -121,7 +106,7 @@ class featuredMediaTpl
             $if[] = '$featured_f->type ' . $sign . ' "video/x-flv"';
         }
 
-        if (count($if) != 0) {
+        if (count($if)) {
             return '<?php if(' . implode(' ' . $operator . ' ', (array) $if) . ') : ?>' . $content . '<?php endif; ?>';
         }
 
@@ -247,6 +232,18 @@ class featuredMediaTpl
     }
 }
 
+dcCore::app()->tpl->addBlock('FeaturedMedia', [featuredMediaTpl::class, 'featuredMedia']);
+dcCore::app()->tpl->addValue('FeaturedMediaMimeType', [featuredMediaTpl::class, 'featuredMediaMimeType']);
+dcCore::app()->tpl->addValue('FeaturedMediaType', [featuredMediaTpl::class, 'featuredMediaType']);
+dcCore::app()->tpl->addValue('FeaturedMediaFileName', [featuredMediaTpl::class, 'featuredMediaFileName']);
+dcCore::app()->tpl->addValue('FeaturedMediaSize', [featuredMediaTpl::class, 'featuredMediaSize']);
+dcCore::app()->tpl->addValue('FeaturedMediaTitle', [featuredMediaTpl::class, 'featuredMediaTitle']);
+dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', [featuredMediaTpl::class, 'featuredMediaThumbnailURL']);
+dcCore::app()->tpl->addValue('FeaturedMediaImageURL', [featuredMediaTpl::class, 'featuredMediaImageURL']);
+dcCore::app()->tpl->addValue('FeaturedMediaURL', [featuredMediaTpl::class, 'featuredMediaURL']);
+
+dcCore::app()->tpl->addBlock('FeaturedMediaIf', [featuredMediaTpl::class, 'featuredMediaIf']);
+
 class featuredMediaBehavior
 {
     public static function tplIfConditions($tag, $attr, $content, $if)
@@ -261,7 +258,7 @@ class featuredMediaBehavior
     {
         if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
             $featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id, null, 'featured'));
-            foreach ($featured as $featured_i => $featured_f) {
+            foreach ($featured as $featured_f) {
                 if ($featured_f->media_image) {
                     $media['img']   = $featured_f->file_url;
                     $media['alt']   = $featured_f->media_title;
@@ -273,3 +270,6 @@ class featuredMediaBehavior
         }
     }
 }
+
+dcCore::app()->addBehavior('tplIfConditions', [featuredMediaBehavior::class, 'tplIfConditions']);
+dcCore::app()->addBehavior('socialMetaMedia', [featuredMediaBehavior::class, 'socialMetaMedia']);
