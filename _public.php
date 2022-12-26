@@ -271,5 +271,7 @@ class featuredMediaBehavior
     }
 }
 
-dcCore::app()->addBehavior('tplIfConditions', [featuredMediaBehavior::class, 'tplIfConditions']);
-dcCore::app()->addBehavior('socialMetaMedia', [featuredMediaBehavior::class, 'socialMetaMedia']);
+dcCore::app()->addBehaviors([
+    'tplIfConditions' => [featuredMediaBehavior::class, 'tplIfConditions'],
+    'socialMetaMedia' => [featuredMediaBehavior::class, 'socialMetaMedia'],
+]);

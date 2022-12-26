@@ -85,10 +85,12 @@ class featuredMediaAdmin
     }
 }
 
-dcCore::app()->addBehavior('adminPostFormItems', [featuredMediaAdmin::class, 'adminPostFormItems']);
-dcCore::app()->addBehavior('adminPostAfterForm', [featuredMediaAdmin::class, 'adminPostAfterForm']);
-dcCore::app()->addBehavior('adminPostHeaders', [featuredMediaAdmin::class, 'postHeaders']);
+dcCore::app()->addBehaviors([
+    'adminPostFormItems' => [featuredMediaAdmin::class, 'adminPostFormItems'],
+    'adminPostAfterForm' => [featuredMediaAdmin::class, 'adminPostAfterForm'],
+    'adminPostHeaders'   => [featuredMediaAdmin::class, 'postHeaders'],
 
-dcCore::app()->addBehavior('adminPageFormItems', [featuredMediaAdmin::class, 'adminPostFormItems']);
-dcCore::app()->addBehavior('adminPageAfterForm', [featuredMediaAdmin::class, 'adminPostAfterForm']);
-dcCore::app()->addBehavior('adminPageHeaders', [featuredMediaAdmin::class, 'postHeaders']);
+    'adminPageFormItems' => [featuredMediaAdmin::class, 'adminPostFormItems'],
+    'adminPageAfterForm' => [featuredMediaAdmin::class, 'adminPostAfterForm'],
+    'adminPageHeaders'   => [featuredMediaAdmin::class, 'postHeaders'],
+]);
