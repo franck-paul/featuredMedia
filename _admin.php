@@ -83,12 +83,26 @@ class featuredMediaAdmin
             dcCore::app()->formNonce() . '</div></form>';
         }
     }
+
+    public static function adminPostFilter(arrayObject $filters)
+    {
+        $filters->append((new dcAdminFilter('featuredmedia'))
+            ->param('media')
+            ->param('link_type', 'featured')
+            ->title(__('Featured media:'))
+            ->options([
+                '-'                          => '',
+                __('With featured media')    => '1',
+                __('Without featured media') => '0',
+            ]));
+    }
 }
 
 dcCore::app()->addBehaviors([
     'adminPostFormItems' => [featuredMediaAdmin::class, 'adminPostFormItems'],
     'adminPostAfterForm' => [featuredMediaAdmin::class, 'adminPostAfterForm'],
     'adminPostHeaders'   => [featuredMediaAdmin::class, 'postHeaders'],
+    'adminPostFilterV2'  => [featuredMediaAdmin::class, 'adminPostFilter'],
 
     'adminPageFormItems' => [featuredMediaAdmin::class, 'adminPostFormItems'],
     'adminPageAfterForm' => [featuredMediaAdmin::class, 'adminPostAfterForm'],

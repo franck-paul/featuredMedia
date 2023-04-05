@@ -10,21 +10,17 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
-
 $this->registerModule(
     'Featured Media',
     'Manage featured media for entry',
     'Franck Paul',
-    '0.6',
+    '1.0',
     [
-        'requires'    => [['core', '2.24']],
+        'requires'    => [['core', '2.25']],
         'permissions' => dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_USAGE,
             dcAuth::PERMISSION_CONTENT_ADMIN,
-            dcPages::PERMISSION_PAGES,
+            initPages::PERMISSION_PAGES,
         ]),
         'priority' => 999,
         'type'     => 'plugin',
