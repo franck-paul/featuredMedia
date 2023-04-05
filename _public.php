@@ -10,10 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
-
 class featuredMediaTpl
 {
     /*dtd
@@ -156,7 +152,7 @@ class featuredMediaTpl
             return '<?php echo ' . sprintf($f, '$featured_f->size') . '; ?>';
         }
 
-        return '<?php echo ' . sprintf($f, 'files::size($featured_f->size)') . '; ?>';
+        return '<?php echo ' . sprintf($f, '\\Dotclear\\Helper\\File\\Files::size($featured_f->size)') . '; ?>';
     }
 
     /*dtd

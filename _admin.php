@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\File\Files;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
@@ -42,7 +45,7 @@ class featuredMediaAdmin
                 '<li><a class="media-link" href="' . dcCore::app()->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
                 'title="' . $f->basename . '">' . $ftitle . '</a></li>' .
                 '<li>' . $f->media_dtstr . '</li>' .
-                '<li>' . files::size($f->size) . ' - ' .
+                '<li>' . Files::size($f->size) . ' - ' .
                 '<a href="' . $f->file_url . '">' . __('open') . '</a>' . '</li>' .
 
                 '<li class="media-action"><a class="featuredmedia-remove" id="featuredmedia-' . $f->media_id . '" ' .
