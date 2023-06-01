@@ -30,7 +30,7 @@ class FrontendBehaviors
     public static function socialMetaMedia($media)
     {
         if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
-            $featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id, null, 'featured'));
+            $featured = new ArrayObject(dcCore::app()->media->getPostMedia((int) dcCore::app()->ctx->posts->post_id, null, 'featured'));
             foreach ($featured as $featured_f) {
                 if ($featured_f->media_image) {
                     $media['img']   = $featured_f->file_url;
