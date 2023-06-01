@@ -16,31 +16,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#, fuzzy
 msgid "featuredMedia"
-msgstr "Média à la une"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to remove featured media \"%s\"?"
-msgstr "Êtes-vous sûr·e de vouloir retirer le média à la une \"%s\" ?"
+msgstr ""
 
 msgid "Featured media"
-msgstr "Média à la une"
+msgstr ""
 
 msgid "open"
 msgstr ""
 
 msgid "No featured media."
-msgstr "Aucun média à la une."
+msgstr ""
 
 msgid "Add a featured media for this entry"
-msgstr "Ajouter un média à la une à cette publication"
+msgstr ""
 
 msgid "Featured media:"
-msgstr "Média à la une :"
+msgstr ""
 
 msgid "With featured media"
-msgstr "Avec média à la une"
+msgstr ""
 
 msgid "Without featured media"
-msgstr "Sans média à la une"
+msgstr ""

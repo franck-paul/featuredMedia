@@ -10,7 +10,15 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-class featuredMediaTpl
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\featuredMedia;
+
+use dcCore;
+use dcTemplate;
+use Dotclear\Helper\File\Files;
+
+class FrontendTemplate
 {
     /*dtd
     <!ELEMENT tpl:featuredMedia - - -- Post featured media -->
@@ -103,7 +111,7 @@ class featuredMediaTpl
         }
 
         if (count($if)) {
-            return '<?php if(' . implode(' ' . $operator . ' ', (array) $if) . ') : ?>' . $content . '<?php endif; ?>';
+            return '<?php if(' . implode(' ' . $operator . ' ', $if) . ') : ?>' . $content . '<?php endif; ?>';
         }
 
         return $content;
@@ -152,7 +160,7 @@ class featuredMediaTpl
             return '<?php echo ' . sprintf($f, '$featured_f->size') . '; ?>';
         }
 
-        return '<?php echo ' . sprintf($f, '\\Dotclear\\Helper\\File\\Files::size($featured_f->size)') . '; ?>';
+        return '<?php echo ' . sprintf($f, Files::class . '::size($featured_f->size)') . '; ?>';
     }
 
     /*dtd
@@ -227,47 +235,3 @@ class featuredMediaTpl
         '?>';
     }
 }
-
-dcCore::app()->tpl->addBlock('FeaturedMedia', [featuredMediaTpl::class, 'featuredMedia']);
-dcCore::app()->tpl->addValue('FeaturedMediaMimeType', [featuredMediaTpl::class, 'featuredMediaMimeType']);
-dcCore::app()->tpl->addValue('FeaturedMediaType', [featuredMediaTpl::class, 'featuredMediaType']);
-dcCore::app()->tpl->addValue('FeaturedMediaFileName', [featuredMediaTpl::class, 'featuredMediaFileName']);
-dcCore::app()->tpl->addValue('FeaturedMediaSize', [featuredMediaTpl::class, 'featuredMediaSize']);
-dcCore::app()->tpl->addValue('FeaturedMediaTitle', [featuredMediaTpl::class, 'featuredMediaTitle']);
-dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', [featuredMediaTpl::class, 'featuredMediaThumbnailURL']);
-dcCore::app()->tpl->addValue('FeaturedMediaImageURL', [featuredMediaTpl::class, 'featuredMediaImageURL']);
-dcCore::app()->tpl->addValue('FeaturedMediaURL', [featuredMediaTpl::class, 'featuredMediaURL']);
-
-dcCore::app()->tpl->addBlock('FeaturedMediaIf', [featuredMediaTpl::class, 'featuredMediaIf']);
-
-class featuredMediaBehavior
-{
-    public static function tplIfConditions($tag, $attr, $content, $if)
-    {
-        if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
-            $sign = (bool) $attr['has_featured_media'] ? '' : '!';
-            $if[] = $sign . 'dcCore::app()->ctx->posts->countMedia(\'featured\')';
-        }
-    }
-
-    public static function socialMetaMedia($media)
-    {
-        if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
-            $featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id, null, 'featured'));
-            foreach ($featured as $featured_f) {
-                if ($featured_f->media_image) {
-                    $media['img']   = $featured_f->file_url;
-                    $media['alt']   = $featured_f->media_title;
-                    $media['large'] = dcCore::app()->blog->settings->socialMeta->photo;
-                    // First attached image found, return
-                    return;
-                }
-            }
-        }
-    }
-}
-
-dcCore::app()->addBehaviors([
-    'tplIfConditions' => [featuredMediaBehavior::class, 'tplIfConditions'],
-    'socialMetaMedia' => [featuredMediaBehavior::class, 'socialMetaMedia'],
-]);

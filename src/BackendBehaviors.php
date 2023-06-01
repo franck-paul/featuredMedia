@@ -10,14 +10,19 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\featuredMedia;
+
+use ArrayObject;
+use dcAdminFilter;
+use dcCore;
+use dcPage;
 use Dotclear\Helper\File\Files;
+use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Hidden;
 
-if (!defined('DC_CONTEXT_ADMIN')) {
-    return;
-}
-
-class featuredMediaAdmin
+class BackendBehaviors
 {
     public static function postHeaders()
     {
@@ -29,7 +34,7 @@ class featuredMediaAdmin
     public static function adminPostFormItems($main, $sidebar, $post)
     {
         if ($post !== null) {
-            $post_media = dcCore::app()->media->getPostMedia($post->post_id, null, 'featured');
+            $post_media = dcCore::app()->media->getPostMedia((int) $post->post_id, null, 'featured');
             $nb_media   = count($post_media);
             $title      = __('Featured media');
             $item       = '<h5 class="clear s-featuredmedia">' . $title . '</h5>';
@@ -77,17 +82,21 @@ class featuredMediaAdmin
     public static function adminPostAfterForm($post)
     {
         if ($post !== null) {
-            echo
-            '<form action="' . dcCore::app()->adminurl->get('admin.post.media') . '" id="featuredmedia-remove-hide" method="post">' .
-            '<div>' . form::hidden(['post_id'], $post->post_id) .
-            form::hidden(['media_id'], '') .
-            form::hidden(['link_type'], 'featured') .
-            form::hidden(['remove'], 1) .
-            dcCore::app()->formNonce() . '</div></form>';
+            echo (new Form('featuredmedia-remove-hide'))
+                ->action(dcCore::app()->adminurl->get('admin.post.media'))
+                ->method('post')
+                ->fields([
+                    (new Hidden(['post_id'], $post->post_id)),
+                    (new Hidden(['media_id'], '')),
+                    (new Hidden(['link_type'], 'featured')),
+                    (new Hidden(['remove'], '1')),
+                    dcCore::app()->formNonce(false),
+                ])
+            ->render();
         }
     }
 
-    public static function adminPostFilter(arrayObject $filters)
+    public static function adminPostFilter(ArrayObject $filters)
     {
         $filters->append((new dcAdminFilter('featuredmedia'))
             ->param('media')
@@ -100,14 +109,3 @@ class featuredMediaAdmin
             ]));
     }
 }
-
-dcCore::app()->addBehaviors([
-    'adminPostFormItems' => [featuredMediaAdmin::class, 'adminPostFormItems'],
-    'adminPostAfterForm' => [featuredMediaAdmin::class, 'adminPostAfterForm'],
-    'adminPostHeaders'   => [featuredMediaAdmin::class, 'postHeaders'],
-    'adminPostFilterV2'  => [featuredMediaAdmin::class, 'adminPostFilter'],
-
-    'adminPageFormItems' => [featuredMediaAdmin::class, 'adminPostFormItems'],
-    'adminPageAfterForm' => [featuredMediaAdmin::class, 'adminPostAfterForm'],
-    'adminPageHeaders'   => [featuredMediaAdmin::class, 'postHeaders'],
-]);
