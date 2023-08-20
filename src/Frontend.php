@@ -15,39 +15,36 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\featuredMedia;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Frontend extends dcNsProcess
+class Frontend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::FRONTEND);
-
-        return static::$init;
+        return self::status(My::checkContext(My::FRONTEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        dcCore::app()->tpl->addBlock('FeaturedMedia', [FrontendTemplate::class, 'featuredMedia']);
-        dcCore::app()->tpl->addValue('FeaturedMediaMimeType', [FrontendTemplate::class, 'featuredMediaMimeType']);
-        dcCore::app()->tpl->addValue('FeaturedMediaType', [FrontendTemplate::class, 'featuredMediaType']);
-        dcCore::app()->tpl->addValue('FeaturedMediaFileName', [FrontendTemplate::class, 'featuredMediaFileName']);
-        dcCore::app()->tpl->addValue('FeaturedMediaSize', [FrontendTemplate::class, 'featuredMediaSize']);
-        dcCore::app()->tpl->addValue('FeaturedMediaTitle', [FrontendTemplate::class, 'featuredMediaTitle']);
-        dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', [FrontendTemplate::class, 'featuredMediaThumbnailURL']);
-        dcCore::app()->tpl->addValue('FeaturedMediaImageURL', [FrontendTemplate::class, 'featuredMediaImageURL']);
-        dcCore::app()->tpl->addValue('FeaturedMediaURL', [FrontendTemplate::class, 'featuredMediaURL']);
+        dcCore::app()->tpl->addBlock('FeaturedMedia', FrontendTemplate::featuredMedia(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaMimeType', FrontendTemplate::featuredMediaMimeType(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaType', FrontendTemplate::featuredMediaType(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaFileName', FrontendTemplate::featuredMediaFileName(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaSize', FrontendTemplate::featuredMediaSize(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaTitle', FrontendTemplate::featuredMediaTitle(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', FrontendTemplate::featuredMediaThumbnailURL(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaImageURL', FrontendTemplate::featuredMediaImageURL(...));
+        dcCore::app()->tpl->addValue('FeaturedMediaURL', FrontendTemplate::featuredMediaURL(...));
 
-        dcCore::app()->tpl->addBlock('FeaturedMediaIf', [FrontendTemplate::class, 'featuredMediaIf']);
+        dcCore::app()->tpl->addBlock('FeaturedMediaIf', FrontendTemplate::featuredMediaIf(...));
 
         dcCore::app()->addBehaviors([
-            'tplIfConditions' => [FrontendBehaviors::class, 'tplIfConditions'],
-            'socialMetaMedia' => [FrontendBehaviors::class, 'socialMetaMedia'],
+            'tplIfConditions' => FrontendBehaviors::tplIfConditions(...),
+            'socialMetaMedia' => FrontendBehaviors::socialMetaMedia(...),
         ]);
 
         return true;

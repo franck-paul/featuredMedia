@@ -15,36 +15,33 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\featuredMedia;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Backend extends dcNsProcess
+class Backend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::BACKEND);
-
         // dead but useful code, in order to have translations
         __('featuredMedia') . __('featuredMedia');
 
-        return static::$init;
+        return self::status(My::checkContext(My::BACKEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         dcCore::app()->addBehaviors([
-            'adminPostFormItems' => [BackendBehaviors::class, 'adminPostFormItems'],
-            'adminPostAfterForm' => [BackendBehaviors::class, 'adminPostAfterForm'],
-            'adminPostHeaders'   => [BackendBehaviors::class, 'postHeaders'],
-            'adminPostFilterV2'  => [BackendBehaviors::class, 'adminPostFilter'],
+            'adminPostFormItems' => BackendBehaviors::adminPostFormItems(...),
+            'adminPostAfterForm' => BackendBehaviors::adminPostAfterForm(...),
+            'adminPostHeaders'   => BackendBehaviors::postHeaders(...),
+            'adminPostFilterV2'  => BackendBehaviors::adminPostFilter(...),
 
-            'adminPageFormItems' => [BackendBehaviors::class, 'adminPostFormItems'],
-            'adminPageAfterForm' => [BackendBehaviors::class, 'adminPostAfterForm'],
-            'adminPageHeaders'   => [BackendBehaviors::class, 'postHeaders'],
+            'adminPageFormItems' => BackendBehaviors::adminPostFormItems(...),
+            'adminPageAfterForm' => BackendBehaviors::adminPostAfterForm(...),
+            'adminPageHeaders'   => BackendBehaviors::postHeaders(...),
         ]);
 
         return true;
