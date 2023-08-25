@@ -20,7 +20,6 @@ use Dotclear\Core\Backend\Filter\Filter;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\Html\Form\Form;
-use Dotclear\Helper\Html\Form\Hidden;
 
 class BackendBehaviors
 {
@@ -86,11 +85,12 @@ class BackendBehaviors
                 ->action(dcCore::app()->admin->url->get('admin.post.media'))
                 ->method('post')
                 ->fields([
-                    (new Hidden(['post_id'], $post->post_id)),
-                    (new Hidden(['media_id'], '')),
-                    (new Hidden(['link_type'], 'featured')),
-                    (new Hidden(['remove'], '1')),
-                    dcCore::app()->formNonce(false),
+                    ... My::hiddenFields([
+                        'post_id'   => $post->post_id,
+                        'media_id'  => '',
+                        'link_type' => 'featured',
+                        'remove'    => '1',
+                    ]),
                 ])
             ->render();
         }
