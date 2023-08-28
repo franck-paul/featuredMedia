@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 featuredMedia module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-01 10:04+0200\n"
+"POT-Creation-Date: 2023-08-28 09:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,28 +16,28 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../git-plugins/featuredMedia/src/Backend.php:27
+#: ../git-plugins/featuredMedia/src/Backend.php:25
 msgid "featuredMedia"
 msgstr ""
 
-#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:30
+#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:29
 #, php-format
 msgid "Are you sure you want to remove featured media \"%s\"?"
 msgstr ""
 
-#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:39
+#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:38
 msgid "Featured media"
 msgstr ""
 
-#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:54
+#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:53
 msgid "open"
 msgstr ""
 
-#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:72
+#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:71
 msgid "No featured media."
 msgstr ""
 
-#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:76
+#: ../git-plugins/featuredMedia/src/BackendBehaviors.php:75
 msgid "Add a featured media for this entry"
 msgstr ""
 
