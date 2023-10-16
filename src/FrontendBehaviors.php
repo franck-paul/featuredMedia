@@ -19,15 +19,32 @@ use dcCore;
 
 class FrontendBehaviors
 {
-    public static function tplIfConditions($tag, $attr, $content, $if)
+    /**
+     * Extends tpl:EntryIf attributes.
+     *
+     * attributes:
+     *
+     *      has_featured_media  (0|1)   Entry has an one or several featured media attachments (if 1), or not (if 0)
+     *
+     * @param   string                      $tag        The current tag
+     * @param   ArrayObject<string, mixed>  $attr       The attributes
+     * @param   string                      $content    The content
+     * @param   ArrayObject<int, string>    $if         The conditions stack
+     */
+    public static function tplIfConditions($tag, $attr, $content, $if): string
     {
         if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (bool) $attr['has_featured_media'] ? '' : '!';
             $if[] = $sign . 'dcCore::app()->ctx->posts->countMedia(\'featured\')';
         }
+
+        return '';
     }
 
-    public static function socialMetaMedia($media)
+    /**
+     * @param      ArrayObject<string, mixed>  $media  The media
+     */
+    public static function socialMetaMedia(ArrayObject $media): string
     {
         if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {   // @phpstan-ignore-line
             $featured = new ArrayObject(dcCore::app()->media->getPostMedia((int) dcCore::app()->ctx->posts->post_id, null, 'featured'));
@@ -38,9 +55,11 @@ class FrontendBehaviors
                     $media['large'] = dcCore::app()->blog->settings->socialMeta->photo;
 
                     // First attached image found, return
-                    return;
+                    return '';
                 }
             }
         }
+
+        return '';
     }
 }

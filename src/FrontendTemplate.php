@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\featuredMedia;
 
+use ArrayObject;
 use dcCore;
 use dcTemplate;
 use Dotclear\Helper\File\Files;
@@ -26,7 +27,14 @@ class FrontendTemplate
     size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
     >
      */
-    public static function featuredMedia($attr, $content)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     * @param      string                                            $content   The content
+     *
+     * @return     string
+     */
+    public static function featuredMedia(array|ArrayObject $attr, string $content): string
     {
         return self::top() . $content . self::end();
     }
@@ -43,7 +51,14 @@ class FrontendTemplate
     is_flv        (0|1)    #IMPLIED    -- test if attachment is a flv file (value : 1) or not (value : 0)
     >
      */
-    public static function featuredMediaIf($attr, $content)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     * @param      string                                            $content   The content
+     *
+     * @return     string
+     */
+    public static function featuredMediaIf(array|ArrayObject $attr, string $content): string
     {
         $if = [];
 
@@ -100,7 +115,13 @@ class FrontendTemplate
     /*dtd
     <!ELEMENT tpl:featuredMediaMimeType - O -- featured media MIME Type -->
      */
-    public static function featuredMediaMimeType($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaMimeType(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
@@ -110,7 +131,13 @@ class FrontendTemplate
     /*dtd
     <!ELEMENT tpl:featuredMediaType - O -- featured media type -->
      */
-    public static function featuredMediaType($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaType(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
@@ -120,7 +147,13 @@ class FrontendTemplate
     /*dtd
     <!ELEMENT tpl:featuredMediaFileName - O -- featured media file name -->
      */
-    public static function featuredMediaFileName($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaFileName(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
@@ -133,7 +166,13 @@ class FrontendTemplate
     full    CDATA    #IMPLIED    -- if set, size is rounded to a human-readable value (in KB, MB, GB, TB)
     >
      */
-    public static function featuredMediaSize($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaSize(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
         if (!empty($attr['full'])) {
@@ -146,7 +185,13 @@ class FrontendTemplate
     /*dtd
     <!ELEMENT tpl:featuredMediaTitle - O -- featured media title -->
      */
-    public static function featuredMediaTitle($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaTitle(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
@@ -156,7 +201,13 @@ class FrontendTemplate
     /*dtd
     <!ELEMENT tpl:featuredMediaThumbnailURL - O -- featured media square thumbnail URL -->
      */
-    public static function featuredMediaThumbnailURL($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaThumbnailURL(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
@@ -177,7 +228,13 @@ class FrontendTemplate
     <!ATTLIST tpl:featuredMediaImageURL
     size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
      */
-    public static function featuredMediaImageURL($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaImageURL(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
         if (empty($attr['size'])) {
@@ -201,7 +258,13 @@ class FrontendTemplate
     /*dtd
     <!ELEMENT tpl:featuredMediaURL - O -- featured media URL -->
      */
-    public static function featuredMediaURL($attr)
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function featuredMediaURL(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
