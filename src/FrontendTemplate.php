@@ -215,8 +215,8 @@ class FrontendTemplate
         '<?php ' . "\n" .
         'if (isset($featured_f->media_thumb[\'sq\'])) {' . "\n" .
         '   $url = $featured_f->media_thumb[\'sq\']);' . "\n" .
-        '   if (substr($url, 0, strlen(dcCore::app()->blog->host)) === dcCore::app()->blog->host) {' . "\n" .
-        '       $url = substr($url, strlen(dcCore::app()->blog->host));' . "\n" .
+        '   if (substr($url, 0, strlen(App::blog()->host())) === App::blog()->host()) {' . "\n" .
+        '       $url = substr($url, strlen(App::blog()->host()));' . "\n" .
         '   }' . "\n" .
         '   echo ' . sprintf($f, '$url') . ';' . "\n" .
         '}' .
@@ -248,8 +248,8 @@ class FrontendTemplate
         '} else {' . "\n" .
         '   $url = $featured_f->file_url;' . "\n" .
         '}' . "\n" .
-        'if (substr($url, 0, strlen(dcCore::app()->blog->host)) === dcCore::app()->blog->host) {' . "\n" .
-        '   $url = substr($url, strlen(dcCore::app()->blog->host));' . "\n" .
+        'if (substr($url, 0, strlen(App::blog()->host())) === App::blog()->host()) {' . "\n" .
+        '   $url = substr($url, strlen(App::blog()->host()));' . "\n" .
         '}' . "\n" .
         'echo ' . sprintf($f, '$url') . ';' . "\n" .
         '?>';
@@ -271,8 +271,8 @@ class FrontendTemplate
         return
         '<?php ' . "\n" .
         '$url = $featured_f->file_url;' . "\n" .
-        'if (substr($url, 0, strlen(dcCore::app()->blog->host)) === dcCore::app()->blog->host) {' . "\n" .
-        '   $url = substr($url, strlen(dcCore::app()->blog->host));' . "\n" .
+        'if (substr($url, 0, strlen(App::blog()->host())) === App::blog()->host()) {' . "\n" .
+        '   $url = substr($url, strlen(App::blog()->host()));' . "\n" .
         '}' . "\n" .
         'echo ' . sprintf($f, '$url') . ';' . "\n" .
         '?>';
