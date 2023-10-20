@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
-use dcCore;
-use dcTemplate;
+use Dotclear\App;
+use Dotclear\Core\Frontend\Tpl;
 use Dotclear\Helper\File\Files;
 
 class FrontendTemplate
@@ -62,7 +62,7 @@ class FrontendTemplate
     {
         $if = [];
 
-        $operator = isset($attr['operator']) ? dcTemplate::getOperator($attr['operator']) : '&&';
+        $operator = isset($attr['operator']) ? Tpl::getOperator($attr['operator']) : '&&';
 
         if (isset($attr['is_image'])) {
             $sign = (bool) $attr['is_image'] ? '' : '!';
@@ -123,7 +123,7 @@ class FrontendTemplate
      */
     public static function featuredMediaMimeType(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->type') . '; ?>';
     }
@@ -139,7 +139,7 @@ class FrontendTemplate
      */
     public static function featuredMediaType(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->media_type') . '; ?>';
     }
@@ -155,7 +155,7 @@ class FrontendTemplate
      */
     public static function featuredMediaFileName(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->basename') . '; ?>';
     }
@@ -174,7 +174,7 @@ class FrontendTemplate
      */
     public static function featuredMediaSize(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
         if (!empty($attr['full'])) {
             return '<?php echo ' . sprintf($f, '$featured_f->size') . '; ?>';
         }
@@ -193,7 +193,7 @@ class FrontendTemplate
      */
     public static function featuredMediaTitle(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '$featured_f->media_title') . '; ?>';
     }
@@ -209,7 +209,7 @@ class FrontendTemplate
      */
     public static function featuredMediaThumbnailURL(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return
         '<?php ' . "\n" .
@@ -236,7 +236,7 @@ class FrontendTemplate
      */
     public static function featuredMediaImageURL(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
         if (empty($attr['size'])) {
             return self::featuredMediaURL($attr);
         }
@@ -266,7 +266,7 @@ class FrontendTemplate
      */
     public static function featuredMediaURL(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return
         '<?php ' . "\n" .
@@ -282,12 +282,12 @@ class FrontendTemplate
     {
         return <<<TPLFM_TOP
             <?php
-              if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {
-                dcCore::app()->ctx->featured = new ArrayObject(dcCore::app()->media->getPostMedia(dcCore::app()->ctx->posts->post_id,null,"featured"));
-                foreach (dcCore::app()->ctx->featured as \$featured_i => \$featured_f) :
-                  dcCore::app()->ctx->featured_i = \$featured_i;
-                  dcCore::app()->ctx->featured_f = \$featured_f;
-                  dcCore::app()->ctx->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
+              if (App::frontend()->context()->posts !== null) {
+                App::frontend()->context()->featured = new ArrayObject(App::media()->getPostMedia(App::frontend()->context()->posts->post_id,null,"featured"));
+                foreach (App::frontend()->context()->featured as \$featured_i => \$featured_f) :
+                  App::frontend()->context()->featured_i = \$featured_i;
+                  App::frontend()->context()->featured_f = \$featured_f;
+                  App::frontend()->context()->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
             ?>
             TPLFM_TOP;
     }
@@ -297,8 +297,8 @@ class FrontendTemplate
         return <<<TPLFM_END
             <?php
                 endforeach;
-                dcCore::app()->ctx->featured = null;
-                unset(dcCore::app()->ctx->featured_i,dcCore::app()->ctx->featured_f,dcCore::app()->ctx->featured_url);
+                App::frontend()->context()->featured = null;
+                unset(App::frontend()->context()->featured_i,App::frontend()->context()->featured_f,App::frontend()->context()->featured_url);
               }
             ?>
             TPLFM_END;

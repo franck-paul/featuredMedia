@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
-use dcCore;
 use Dotclear\App;
 
 class FrontendBehaviors
@@ -36,7 +35,7 @@ class FrontendBehaviors
     {
         if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (bool) $attr['has_featured_media'] ? '' : '!';
-            $if[] = $sign . 'dcCore::app()->ctx->posts->countMedia(\'featured\')';
+            $if[] = $sign . 'App::frontend()->context()->posts->countMedia(\'featured\')';
         }
 
         return '';
@@ -47,8 +46,8 @@ class FrontendBehaviors
      */
     public static function socialMetaMedia(ArrayObject $media): string
     {
-        if (dcCore::app()->ctx->posts !== null && dcCore::app()->media) {   // @phpstan-ignore-line
-            $featured = new ArrayObject(dcCore::app()->media->getPostMedia((int) dcCore::app()->ctx->posts->post_id, null, 'featured'));
+        if (App::frontend()->context()->posts !== null) {
+            $featured = new ArrayObject(App::media()->getPostMedia((int) App::frontend()->context()->posts->post_id, null, 'featured'));
             foreach ($featured as $featured_f) {
                 if ($featured_f->media_image) {
                     $media['img']   = $featured_f->file_url;

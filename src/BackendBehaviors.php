@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Filter\Filter;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
@@ -39,7 +39,7 @@ class BackendBehaviors
     public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
         if ($post !== null) {
-            $post_media = dcCore::app()->media->getPostMedia((int) $post->post_id, null, 'featured');
+            $post_media = App::media()->getPostMedia((int) $post->post_id, null, 'featured');
             $nb_media   = count($post_media);
             $title      = __('Featured media');
             $item       = '<h5 class="clear s-featuredmedia">' . $title . '</h5>';
@@ -49,17 +49,17 @@ class BackendBehaviors
                     $ftitle = substr($ftitle, 0, 16) . '...';
                 }
                 $item .= '<div class="media-item s-featuredmedia">' .
-                '<a class="media-icon" href="' . dcCore::app()->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '">' .
+                '<a class="media-icon" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '">' .
                 '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '" /></a>' .
                 '<ul>' .
-                '<li><a class="media-link" href="' . dcCore::app()->adminurl->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
+                '<li><a class="media-link" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
                 'title="' . $f->basename . '">' . $ftitle . '</a></li>' .
                 '<li>' . $f->media_dtstr . '</li>' .
                 '<li>' . Files::size($f->size) . ' - ' .
                 '<a href="' . $f->file_url . '">' . __('open') . '</a>' . '</li>' .
 
                 '<li class="media-action"><a class="featuredmedia-remove" id="featuredmedia-' . $f->media_id . '" ' .
-                'href="' . dcCore::app()->adminurl->get('admin.post.media', [
+                'href="' . App::backend()->url()->get('admin.post.media', [
                     'post_id'   => $post->post_id,
                     'media_id'  => $f->media_id,
                     'link_type' => 'featured',
@@ -77,7 +77,7 @@ class BackendBehaviors
                 $item .= '<p class="form-note s-featuredmedia">' . __('No featured media.') . '</p>';
             }
             if (!$nb_media) {
-                $item .= '<p class="s-featuredmedia"><a class="button" href="' . dcCore::app()->adminurl->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
+                $item .= '<p class="s-featuredmedia"><a class="button" href="' . App::backend()->url()->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
                 __('Add a featured media for this entry') . '</a></p>';
             }
             $sidebar['metas-box']['items']['featuredmedia'] = $item;
@@ -95,7 +95,7 @@ class BackendBehaviors
     {
         if ($post !== null) {
             echo (new Form('featuredmedia-remove-hide'))
-                ->action(dcCore::app()->adminurl->get('admin.post.media'))
+                ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
                 ->fields([
                     ... My::hiddenFields([

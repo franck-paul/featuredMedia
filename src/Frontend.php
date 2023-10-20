@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\featuredMedia;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Frontend extends Process
@@ -30,19 +30,19 @@ class Frontend extends Process
             return false;
         }
 
-        dcCore::app()->tpl->addBlock('FeaturedMedia', FrontendTemplate::featuredMedia(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaMimeType', FrontendTemplate::featuredMediaMimeType(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaType', FrontendTemplate::featuredMediaType(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaFileName', FrontendTemplate::featuredMediaFileName(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaSize', FrontendTemplate::featuredMediaSize(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaTitle', FrontendTemplate::featuredMediaTitle(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaThumbnailURL', FrontendTemplate::featuredMediaThumbnailURL(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaImageURL', FrontendTemplate::featuredMediaImageURL(...));
-        dcCore::app()->tpl->addValue('FeaturedMediaURL', FrontendTemplate::featuredMediaURL(...));
+        App::frontend()->template()->addBlock('FeaturedMedia', FrontendTemplate::featuredMedia(...));
+        App::frontend()->template()->addValue('FeaturedMediaMimeType', FrontendTemplate::featuredMediaMimeType(...));
+        App::frontend()->template()->addValue('FeaturedMediaType', FrontendTemplate::featuredMediaType(...));
+        App::frontend()->template()->addValue('FeaturedMediaFileName', FrontendTemplate::featuredMediaFileName(...));
+        App::frontend()->template()->addValue('FeaturedMediaSize', FrontendTemplate::featuredMediaSize(...));
+        App::frontend()->template()->addValue('FeaturedMediaTitle', FrontendTemplate::featuredMediaTitle(...));
+        App::frontend()->template()->addValue('FeaturedMediaThumbnailURL', FrontendTemplate::featuredMediaThumbnailURL(...));
+        App::frontend()->template()->addValue('FeaturedMediaImageURL', FrontendTemplate::featuredMediaImageURL(...));
+        App::frontend()->template()->addValue('FeaturedMediaURL', FrontendTemplate::featuredMediaURL(...));
 
-        dcCore::app()->tpl->addBlock('FeaturedMediaIf', FrontendTemplate::featuredMediaIf(...));
+        App::frontend()->template()->addBlock('FeaturedMediaIf', FrontendTemplate::featuredMediaIf(...));
 
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'tplIfConditions' => FrontendBehaviors::tplIfConditions(...),
             'socialMetaMedia' => FrontendBehaviors::socialMetaMedia(...),
         ]);
