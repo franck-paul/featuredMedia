@@ -14,7 +14,7 @@ $this->registerModule(
     'Featured Media',
     'Manage featured media for entry',
     'Franck Paul',
-    '3.0',
+    '4.0',
     [
         'requires'    => [['core', '2.28']],
         'permissions' => 'My',
