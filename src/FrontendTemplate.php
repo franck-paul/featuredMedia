@@ -92,6 +92,7 @@ class FrontendTemplate
             } else {
                 $test .= ' || $featured_f->type == "video/x-flv"';
             }
+
             $if[] = $test;
         }
 
@@ -105,7 +106,7 @@ class FrontendTemplate
             $if[] = '$featured_f->type ' . $sign . ' "video/x-flv"';
         }
 
-        if (count($if)) {
+        if ($if !== []) {
             return '<?php if(' . implode(' ' . $operator . ' ', $if) . ') : ?>' . $content . '<?php endif; ?>';
         }
 

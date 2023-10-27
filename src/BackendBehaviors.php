@@ -38,7 +38,7 @@ class BackendBehaviors
      */
     public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
-        if ($post !== null) {
+        if ($post instanceof \Dotclear\Database\MetaRecord) {
             $post_media = App::media()->getPostMedia((int) $post->post_id, null, 'featured');
             $nb_media   = count($post_media);
             $title      = __('Featured media');
@@ -48,8 +48,8 @@ class BackendBehaviors
                 if (strlen($ftitle) > 18) {
                     $ftitle = substr($ftitle, 0, 16) . '...';
                 }
-                $item .= '<div class="media-item s-featuredmedia">' .
-                '<a class="media-icon" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '">' .
+
+                $item .= '<div class="media-item s-featuredmedia"><a class="media-icon" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '">' .
                 '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '" /></a>' .
                 '<ul>' .
                 '<li><a class="media-link" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
@@ -71,15 +71,18 @@ class BackendBehaviors
                     '</ul>' .
                     '</div>';
             }
+
             unset($f);
 
             if (empty($post_media)) {
                 $item .= '<p class="form-note s-featuredmedia">' . __('No featured media.') . '</p>';
             }
-            if (!$nb_media) {
+
+            if ($nb_media === 0) {
                 $item .= '<p class="s-featuredmedia"><a class="button" href="' . App::backend()->url()->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
                 __('Add a featured media for this entry') . '</a></p>';
             }
+
             $sidebar['metas-box']['items']['featuredmedia'] = $item;
         }
 
@@ -93,7 +96,7 @@ class BackendBehaviors
      */
     public static function adminPostAfterForm(?MetaRecord $post): string
     {
-        if ($post !== null) {
+        if ($post instanceof \Dotclear\Database\MetaRecord) {
             echo (new Form('featuredmedia-remove-hide'))
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
