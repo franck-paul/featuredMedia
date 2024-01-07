@@ -21,6 +21,7 @@ use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Hidden;
 
 class BackendBehaviors
 {
@@ -50,7 +51,7 @@ class BackendBehaviors
                 }
 
                 $item .= '<div class="media-item s-featuredmedia"><a class="media-icon" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '">' .
-                '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '" /></a>' .
+                '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '"></a>' .
                 '<ul>' .
                 '<li><a class="media-link" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
                 'title="' . $f->basename . '">' . $ftitle . '</a></li>' .
@@ -65,7 +66,7 @@ class BackendBehaviors
                     'link_type' => 'featured',
                     'remove'    => '1',
                 ]) . '">' .
-                '<img src="images/trash.png" alt="' . __('remove') . '" /></a>' .
+                '<img src="images/trash.png" alt="' . __('remove') . '"></a>' .
                     '</li>' .
 
                     '</ul>' .
@@ -101,12 +102,11 @@ class BackendBehaviors
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
                 ->fields([
-                    ... My::hiddenFields([
-                        'post_id'   => $post->post_id,
-                        'media_id'  => '',
-                        'link_type' => 'featured',
-                        'remove'    => '1',
-                    ]),
+                    new Hidden(['post_id'], $post->post_id),
+                    new Hidden(['media_id'], ''),
+                    new Hidden(['link_type'], 'featured'),
+                    new Hidden(['remove'], '1'),
+                    App::nonce()->formNonce(),
                 ])
             ->render();
         }
