@@ -29,6 +29,7 @@ class BackendBehaviors
     {
         return
         Page::jsJson('featuredmedia', ['confirm_remove_featuredmedia' => __('Are you sure you want to remove featured media "%s"?')]) .
+        My::cssLoad('post.css') .
         My::jsLoad('post.js');
     }
 
@@ -66,7 +67,7 @@ class BackendBehaviors
                     'link_type' => 'featured',
                     'remove'    => '1',
                 ]) . '">' .
-                '<img src="images/trash.png" alt="' . __('remove') . '"></a>' .
+                '<img src="images/trash.svg" alt="' . __('remove') . '"></a>' .
                     '</li>' .
 
                     '</ul>' .
