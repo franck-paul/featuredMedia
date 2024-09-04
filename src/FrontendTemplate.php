@@ -126,7 +126,7 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$featured_f->type') . '; ?>';
+        return '<?= ' . sprintf($f, '$featured_f->type') . ' ?>';
     }
 
     /*dtd
@@ -142,7 +142,7 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$featured_f->media_type') . '; ?>';
+        return '<?= ' . sprintf($f, '$featured_f->media_type') . ' ?>';
     }
 
     /*dtd
@@ -158,7 +158,7 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$featured_f->basename') . '; ?>';
+        return '<?= ' . sprintf($f, '$featured_f->basename') . ' ?>';
     }
 
     /*dtd
@@ -177,10 +177,10 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
         if (!empty($attr['full'])) {
-            return '<?php echo ' . sprintf($f, '$featured_f->size') . '; ?>';
+            return '<?= ' . sprintf($f, '$featured_f->size') . ' ?>';
         }
 
-        return '<?php echo ' . sprintf($f, Files::class . '::size($featured_f->size)') . '; ?>';
+        return '<?= ' . sprintf($f, Files::class . '::size($featured_f->size)') . ' ?>';
     }
 
     /*dtd
@@ -196,7 +196,7 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$featured_f->media_title') . '; ?>';
+        return '<?= ' . sprintf($f, '$featured_f->media_title') . ' ?>';
     }
 
     /*dtd

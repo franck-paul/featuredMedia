@@ -48,7 +48,7 @@ class BackendBehaviors
             foreach ($post_media as $f) {
                 $ftitle = $f->media_title;
                 if (strlen($ftitle) > 18) {
-                    $ftitle = substr($ftitle, 0, 16) . '...';
+                    $ftitle = substr($ftitle, 0, 17) . '…';
                 }
 
                 $item .= '<div class="media-item s-featuredmedia"><a class="media-icon" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '">' .
