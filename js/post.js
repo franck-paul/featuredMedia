@@ -1,25 +1,34 @@
-/*global $, dotclear */
+/*global dotclear */
 'use strict';
 
-$(() => {
+dotclear.ready(() => {
   Object.assign(dotclear.msg, dotclear.getData('featuredmedia'));
 
-  $('#edit-entry').on('onetabload', () => {
-    // Replace featured media remove links by a POST form submit
-    $('a.featuredmedia-remove').on('click', function () {
-      this.href = '';
-      const m_name = $(this).parents('ul').find('li:first>a').attr('title');
-      if (window.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', m_name))) {
-        const f = $('#featuredmedia-remove-hide').get(0);
-        f.elements.media_id.value = this.id.substring(14);
-        f.submit();
+  // Replace featured media remove links by a POST form submit
+  const removes = document.querySelectorAll('a.featuredmedia-remove');
+  for (const remove of removes) {
+    remove.addEventListener('click', (e) => {
+      remove.href = '';
+      const media_title = remove.parentNode.parentNode.querySelector('li > a')?.getAttribute('title');
+      if (window.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', media_title))) {
+        const form = document.getElementById('featuredmedia-remove-hide');
+        if (form) {
+          // Extract media ID
+          form.elements.media_id.value = remove.id.substring(14);
+          form.submit();
+        }
       }
+      e.preventDefault();
       return false;
     });
-  });
+  }
 
-  $('h5.s-featuredmedia').toggleWithLegend($('.s-featuredmedia').not('h5'), {
-    user_pref: 'dcx_featuredmedia',
-    legend_click: true,
-  });
+  const legend = document.querySelector('h5.s-featuredmedia');
+  if (legend) {
+    const childs = document.querySelectorAll('.s-featuredmedia:not(h5)');
+    dotclear.toggleWithLegend(legend, childs, {
+      user_pref: 'dcx_featuredmedia',
+      legend_click: true,
+    });
+  }
 });
