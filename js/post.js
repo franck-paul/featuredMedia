@@ -7,7 +7,7 @@ dotclear.ready(() => {
   // Replace featured media remove links by a POST form submit
   const removes = document.querySelectorAll('a.featuredmedia-remove');
   for (const remove of removes) {
-    remove.addEventListener('click', (e) => {
+    remove.addEventListener('click', (event) => {
       remove.href = '';
       const media_title = remove.parentNode.parentNode.querySelector('li > a')?.getAttribute('title');
       if (window.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', media_title))) {
@@ -18,7 +18,7 @@ dotclear.ready(() => {
           form.submit();
         }
       }
-      e.preventDefault();
+      event.preventDefault();
       return false;
     });
   }
