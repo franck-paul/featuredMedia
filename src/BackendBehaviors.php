@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief featuredMedia, a plugin for Dotclear 2
  *
@@ -93,8 +94,6 @@ class BackendBehaviors
 
     /**
      * @param      MetaRecord|null  $post   The post
-     *
-     * @return     string
      */
     public static function adminPostAfterForm(?MetaRecord $post): string
     {
@@ -117,8 +116,6 @@ class BackendBehaviors
 
     /**
      * @param      ArrayObject<int, mixed>  $filters  The filters
-     *
-     * @return     string
      */
     public static function adminPostFilter(ArrayObject $filters): string
     {

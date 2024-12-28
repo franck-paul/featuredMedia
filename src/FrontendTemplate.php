@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief featuredMedia, a plugin for Dotclear 2
  *
@@ -22,17 +23,15 @@ use Dotclear\Helper\File\Files;
 class FrontendTemplate
 {
     /*dtd
-    <!ELEMENT tpl:featuredMedia - - -- Post featured media -->
-    <!ATTLIST tpl;featuredMedia
-    size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
-    >
-     */
+      <!ELEMENT tpl:featuredMedia - - -- Post featured media -->
+      <!ATTLIST tpl;featuredMedia
+      size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
+      >
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
      * @param      string                                            $content   The content
-     *
-     * @return     string
      */
     public static function featuredMedia(array|ArrayObject $attr, string $content): string
     {
@@ -40,23 +39,21 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaIf - - -- Test on featured media fields -->
-    <!ATTLIST tpl:featuredMediaIf
-    is_image    (0|1)    #IMPLIED    -- test if featured media is an image (value : 1) or not (value : 0)
-    has_thumb    (0|1)    #IMPLIED    -- test if featured media has a square thumbnail (value : 1) or not (value : 0)
-    has_size    ('sq','t','s','m')    -- test if featured media has the requested thumbnail size or not
-    is_audio    (0|1)    #IMPLIED    -- test if featured media is an audio file (value : 1) or not (value : 0)
-    is_video    (0|1)    #IMPLIED    -- test if featured media is a video file (value : 1) or not (value : 0)
-    is_mp3        (0|1)    #IMPLIED    -- test if attachment is a mp3 file (value : 1) or not (value : 0)
-    is_flv        (0|1)    #IMPLIED    -- test if attachment is a flv file (value : 1) or not (value : 0)
-    >
-     */
+      <!ELEMENT tpl:featuredMediaIf - - -- Test on featured media fields -->
+      <!ATTLIST tpl:featuredMediaIf
+      is_image    (0|1)    #IMPLIED    -- test if featured media is an image (value : 1) or not (value : 0)
+      has_thumb    (0|1)    #IMPLIED    -- test if featured media has a square thumbnail (value : 1) or not (value : 0)
+      has_size    ('sq','t','s','m')    -- test if featured media has the requested thumbnail size or not
+      is_audio    (0|1)    #IMPLIED    -- test if featured media is an audio file (value : 1) or not (value : 0)
+      is_video    (0|1)    #IMPLIED    -- test if featured media is a video file (value : 1) or not (value : 0)
+      is_mp3        (0|1)    #IMPLIED    -- test if attachment is a mp3 file (value : 1) or not (value : 0)
+      is_flv        (0|1)    #IMPLIED    -- test if attachment is a flv file (value : 1) or not (value : 0)
+      >
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
      * @param      string                                            $content   The content
-     *
-     * @return     string
      */
     public static function featuredMediaIf(array|ArrayObject $attr, string $content): string
     {
@@ -87,7 +84,7 @@ class FrontendTemplate
             // Since 2.15 .flv media are no more considered as video (Flash is obsolete)
             $sign = (bool) $attr['is_video'] ? '==' : '!=';
             $test = '$featured_f->type_prefix ' . $sign . ' "video"';
-            if ($sign == '==') {
+            if ($sign === '==') {
                 $test .= ' && $featured_f->type != "video/x-flv"';
             } else {
                 $test .= ' || $featured_f->type == "video/x-flv"';
@@ -114,13 +111,11 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaMimeType - O -- featured media MIME Type -->
-     */
+      <!ELEMENT tpl:featuredMediaMimeType - O -- featured media MIME Type -->
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaMimeType(array|ArrayObject $attr): string
     {
@@ -130,13 +125,11 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaType - O -- featured media type -->
-     */
+      <!ELEMENT tpl:featuredMediaType - O -- featured media type -->
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaType(array|ArrayObject $attr): string
     {
@@ -146,13 +139,11 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaFileName - O -- featured media file name -->
-     */
+      <!ELEMENT tpl:featuredMediaFileName - O -- featured media file name -->
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaFileName(array|ArrayObject $attr): string
     {
@@ -162,16 +153,14 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaSize - O -- featured media size -->
-    <!ATTLIST tpl:featuredMediaSize
-    full    CDATA    #IMPLIED    -- if set, size is rounded to a human-readable value (in KB, MB, GB, TB)
-    >
-     */
+      <!ELEMENT tpl:featuredMediaSize - O -- featured media size -->
+      <!ATTLIST tpl:featuredMediaSize
+      full    CDATA    #IMPLIED    -- if set, size is rounded to a human-readable value (in KB, MB, GB, TB)
+      >
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaSize(array|ArrayObject $attr): string
     {
@@ -184,13 +173,11 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaTitle - O -- featured media title -->
-     */
+      <!ELEMENT tpl:featuredMediaTitle - O -- featured media title -->
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaTitle(array|ArrayObject $attr): string
     {
@@ -200,13 +187,11 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaThumbnailURL - O -- featured media square thumbnail URL -->
-     */
+      <!ELEMENT tpl:featuredMediaThumbnailURL - O -- featured media square thumbnail URL -->
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaThumbnailURL(array|ArrayObject $attr): string
     {
@@ -225,15 +210,13 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaImageURL - O -- featured media image URL -->
-    <!ATTLIST tpl:featuredMediaImageURL
-    size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
-     */
+      <!ELEMENT tpl:featuredMediaImageURL - O -- featured media image URL -->
+      <!ATTLIST tpl:featuredMediaImageURL
+      size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaImageURL(array|ArrayObject $attr): string
     {
@@ -257,13 +240,11 @@ class FrontendTemplate
     }
 
     /*dtd
-    <!ELEMENT tpl:featuredMediaURL - O -- featured media URL -->
-     */
+      <!ELEMENT tpl:featuredMediaURL - O -- featured media URL -->
+       */
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function featuredMediaURL(array|ArrayObject $attr): string
     {

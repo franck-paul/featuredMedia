@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief featuredMedia, a plugin for Dotclear 2
  *
@@ -22,7 +23,8 @@ class Backend extends Process
     public static function init(): bool
     {
         // dead but useful code, in order to have translations
-        __('featuredMedia') . __('featuredMedia');
+        __('featuredMedia');
+        __('featuredMedia');
 
         return self::status(My::checkContext(My::BACKEND));
     }
