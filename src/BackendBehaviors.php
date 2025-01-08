@@ -17,12 +17,12 @@ namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Core\Backend\Filter\Filter;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Hidden;
+use Dotclear\Helper\Stack\Filter;
 
 class BackendBehaviors
 {
