@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief featuredMedia, a plugin for Dotclear 2
  *

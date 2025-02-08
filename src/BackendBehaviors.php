@@ -20,8 +20,18 @@ use Dotclear\App;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\File\Files;
+use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Hidden;
+use Dotclear\Helper\Html\Form\Img;
+use Dotclear\Helper\Html\Form\Li;
+use Dotclear\Helper\Html\Form\Link;
+use Dotclear\Helper\Html\Form\None;
+use Dotclear\Helper\Html\Form\Note;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Set;
+use Dotclear\Helper\Html\Form\Text;
+use Dotclear\Helper\Html\Form\Ul;
 use Dotclear\Helper\Stack\Filter;
 
 class BackendBehaviors
@@ -41,52 +51,91 @@ class BackendBehaviors
      */
     public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
-        if ($post instanceof \Dotclear\Database\MetaRecord) {
+        if ($post instanceof MetaRecord) {
             $post_media = App::media()->getPostMedia((int) $post->post_id, null, 'featured');
-            $nb_media   = count($post_media);
-            $title      = __('Featured media');
-            $item       = '<h5 class="clear s-featuredmedia">' . $title . '</h5>';
-            foreach ($post_media as $f) {
-                $ftitle = $f->media_title;
-                if (strlen($ftitle) > 18) {
-                    $ftitle = substr($ftitle, 0, 17) . '…';
-                }
-
-                $item .= '<div class="media-item s-featuredmedia"><a class="media-icon" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '">' .
-                '<img src="' . $f->media_icon . '" alt="" title="' . $f->basename . '"></a>' .
-                '<ul>' .
-                '<li><a class="media-link" href="' . App::backend()->url()->get('admin.media.item', ['id' => $f->media_id]) . '" ' .
-                'title="' . $f->basename . '">' . $ftitle . '</a></li>' .
-                '<li>' . $f->media_dtstr . '</li>' .
-                '<li>' . Files::size($f->size) . ' - ' .
-                '<a href="' . $f->file_url . '">' . __('open') . '</a>' . '</li>' .
-
-                '<li class="media-action"><a class="featuredmedia-remove" id="featuredmedia-' . $f->media_id . '" ' .
-                'href="' . App::backend()->url()->get('admin.post.media', [
-                    'post_id'   => $post->post_id,
-                    'media_id'  => $f->media_id,
-                    'link_type' => 'featured',
-                    'remove'    => '1',
-                ]) . '">' .
-                '<img src="images/trash.svg" alt="' . __('remove') . '"></a>' .
-                    '</li>' .
-
-                    '</ul>' .
-                    '</div>';
-            }
-
-            unset($f);
+            $blocks     = [];
 
             if (empty($post_media)) {
-                $item .= '<p class="form-note s-featuredmedia">' . __('No featured media.') . '</p>';
+                $blocks[] = (new Note())
+                    ->class(['form-note', 's-featuredmedia'])
+                    ->text(__('No featured media.'));
+            } else {
+                foreach ($post_media as $media) {
+                    $ftitle    = $media->media_title;
+                    $media_url = App::backend()->url()->get('admin.media.item', ['id' => $media->media_id]);
+                    if (strlen($ftitle) > 18) {
+                        $ftitle = substr($ftitle, 0, 17) . '…';
+                    }
+
+                    $blocks[] = (new Div())
+                        ->class(['media-item', 's-featuredmedia'])
+                        ->items([
+                            (new Link())
+                                ->class('media-icon')
+                                ->href($media_url)
+                                ->items([
+                                    (new Img($media->media_icon))
+                                        ->alt('')
+                                        ->title($media->basename),
+                                ]),
+                            (new Ul())
+                                ->items([
+                                    (new Li())
+                                        ->items([
+                                            (new Link())
+                                                ->class('media-link')
+                                                ->href($media_url)
+                                                ->title($media->basename)
+                                                ->text($ftitle),
+                                        ]),
+                                    (new Li())
+                                        ->text($media->media_dtstr),
+                                    (new Li())
+                                        ->separator(' - ')
+                                        ->items([
+                                            (new Text(null, Files::size($media->size))),
+                                            (new Link())
+                                                ->href($media->file_url)
+                                                ->text(__('open')),
+                                        ]),
+                                    (new Li())
+                                        ->class('media-action')
+                                        ->items([
+                                            (new Link('featuredmedia-' . $media->media_id))
+                                                ->class('featuredmedia-remove')
+                                                ->href(App::backend()->url()->get('admin.post.media', [
+                                                    'post_id'   => $post->post_id,
+                                                    'media_id'  => $media->media_id,
+                                                    'link_type' => 'featured',
+                                                    'remove'    => '1',
+                                                ]))
+                                                ->items([
+                                                    (new Img('images/trash.svg'))
+                                                        ->alt(__('remove')),
+                                                ]),
+                                        ]),
+                                ]),
+                        ]);
+                }
             }
 
-            if ($nb_media === 0) {
-                $item .= '<p class="s-featuredmedia"><a class="button" href="' . App::backend()->url()->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']) . '">' .
-                __('Add a featured media for this entry') . '</a></p>';
-            }
-
-            $sidebar['metas-box']['items']['featuredmedia'] = $item;
+            $sidebar['metas-box']['items']['featuredmedia'] = (new Set())
+                ->items([
+                    (new Text('h5', __('Featured media')))
+                        ->class(['clear', 's-featuredmedia']),
+                    ...$blocks,
+                    empty($post_media) ?
+                        (new Para())
+                            ->class('s-featuredmedia')
+                            ->items([
+                                (new Link())
+                                    ->class('button')
+                                    ->href(App::backend()->url()->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']))
+                                    ->text(__('Add a featured media for this entry')),
+                            ]) :
+                        (new None()),
+                ])
+            ->render();
         }
 
         return '';
@@ -97,7 +146,7 @@ class BackendBehaviors
      */
     public static function adminPostAfterForm(?MetaRecord $post): string
     {
-        if ($post instanceof \Dotclear\Database\MetaRecord) {
+        if ($post instanceof MetaRecord) {
             echo (new Form('featuredmedia-remove-hide'))
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')

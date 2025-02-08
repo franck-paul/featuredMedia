@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief featuredMedia, a plugin for Dotclear 2
  *
@@ -35,7 +36,7 @@ class FrontendBehaviors
     {
         if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (bool) $attr['has_featured_media'] ? '' : '!';
-            $if[] = $sign . 'App::frontend()->context()->posts->countMedia(\'featured\')';
+            $if->append($sign . 'App::frontend()->context()->posts->countMedia(\'featured\')');
         }
 
         return '';
