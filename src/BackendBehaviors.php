@@ -63,8 +63,8 @@ class BackendBehaviors
                 foreach ($post_media as $media) {
                     $ftitle    = $media->media_title;
                     $media_url = App::backend()->url()->get('admin.media.item', ['id' => $media->media_id]);
-                    if (strlen($ftitle) > 18) {
-                        $ftitle = substr($ftitle, 0, 17) . '…';
+                    if (strlen((string) $ftitle) > 18) {
+                        $ftitle = substr((string) $ftitle, 0, 17) . '…';
                     }
 
                     $blocks[] = (new Div())
