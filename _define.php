@@ -17,8 +17,11 @@ $this->registerModule(
     'Franck Paul',
     '5.2',
     [
-        'date'        => '2025-02-26T16:08:26+0100',
-        'requires'    => [['core', '2.33']],
+        'date'     => '2025-02-26T16:08:26+0100',
+        'requires' => [
+            ['core', '2.34'],
+            ['TemplateHelper'],
+        ],
         'permissions' => 'My',
         'priority'    => 999,
         'type'        => 'plugin',
@@ -26,5 +29,6 @@ $this->registerModule(
         'details'    => 'https://open-time.net/?q=featuredMedia',
         'support'    => 'https://github.com/franck-paul/featuredMedia',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/featuredMedia/main/dcstore.xml',
+        'license'    => 'gpl2',
     ]
 );

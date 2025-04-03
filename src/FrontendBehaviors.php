@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
 use Dotclear\App;
+use Dotclear\Plugin\TemplateHelper\Code;
 
 class FrontendBehaviors
 {
@@ -36,10 +37,21 @@ class FrontendBehaviors
     {
         if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (bool) $attr['has_featured_media'] ? '' : '!';
-            $if->append($sign . 'App::frontend()->context()->posts->countMedia(\'featured\')');
+            $if->append($sign . rtrim(Code::getPHPCode(
+                self::tplIfConditionsCode(...),
+                [],
+                false
+            ), ';'));
         }
 
         return '';
+    }
+
+    // Template code for tplIfConditions
+
+    protected static function tplIfConditionsCode(
+    ): void {
+        App::frontend()->context()->posts->countMedia('featured');
     }
 
     /**

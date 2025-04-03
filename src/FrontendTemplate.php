@@ -16,16 +16,13 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
-use Dotclear\App;
 use Dotclear\Core\Frontend\Tpl;
-use Dotclear\Helper\File\Files;
+use Dotclear\Plugin\TemplateHelper\Code;
 
 class FrontendTemplate
 {
     /*dtd
-      <!ELEMENT tpl:featuredMedia - - -- Post featured media -->
-      <!ATTLIST tpl;featuredMedia
-      size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
+      <!ELEMENT tpl:FeaturedMedia - - -- Post featured media -->
       >
        */
 
@@ -35,12 +32,19 @@ class FrontendTemplate
      */
     public static function featuredMedia(array|ArrayObject $attr, string $content): string
     {
-        return self::top() . $content . self::end();
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
+
+        return Code::getPHPTemplateBlockCode(
+            FrontendTemplateCode::featuredMedia(...),
+            [],
+            $content,
+            $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaIf - - -- Test on featured media fields -->
-      <!ATTLIST tpl:featuredMediaIf
+      <!ELEMENT tpl:FeaturedMediaIf - - -- Test on featured media fields -->
+      <!ATTLIST tpl:FeaturedMediaIf
       is_image    (0|1)    #IMPLIED    -- test if featured media is an image (value : 1) or not (value : 0)
       has_thumb    (0|1)    #IMPLIED    -- test if featured media has a square thumbnail (value : 1) or not (value : 0)
       has_size    ('sq','t','s','m')    -- test if featured media has the requested thumbnail size or not
@@ -57,6 +61,12 @@ class FrontendTemplate
      */
     public static function featuredMediaIf(array|ArrayObject $attr, string $content): string
     {
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
+
+        /**
+         * Warning: Take care of $featured_f variable used in template code
+         * Should be renamed here if renamed in FrontendTemplateCode::featuredMediaIf() code.
+         */
         $if = [];
 
         $operator = isset($attr['operator']) ? Tpl::getOperator($attr['operator']) : '&&';
@@ -76,42 +86,51 @@ class FrontendTemplate
         }
 
         if (isset($attr['is_audio'])) {
-            $sign = (bool) $attr['is_audio'] ? '==' : '!=';
+            $sign = (bool) $attr['is_audio'] ? '===' : '!==';
             $if[] = '$featured_f->type_prefix ' . $sign . ' "audio"';
         }
 
         if (isset($attr['is_video'])) {
             // Since 2.15 .flv media are no more considered as video (Flash is obsolete)
-            $sign = (bool) $attr['is_video'] ? '==' : '!=';
+            $sign = (bool) $attr['is_video'] ? '===' : '!==';
             $test = '$featured_f->type_prefix ' . $sign . ' "video"';
-            if ($sign === '==') {
-                $test .= ' && $featured_f->type != "video/x-flv"';
+            if ($sign === '===') {
+                $test .= ' && $featured_f->type !== "video/x-flv"';
             } else {
-                $test .= ' || $featured_f->type == "video/x-flv"';
+                $test .= ' || $featured_f->type === "video/x-flv"';
             }
 
             $if[] = $test;
         }
 
         if (isset($attr['is_mp3'])) {
-            $sign = (bool) $attr['is_mp3'] ? '==' : '!=';
+            $sign = (bool) $attr['is_mp3'] ? '===' : '!==';
             $if[] = '$featured_f->type ' . $sign . ' "audio/mpeg3"';
         }
 
         if (isset($attr['is_flv'])) {
-            $sign = (bool) $attr['is_flv'] ? '==' : '!=';
+            $sign = (bool) $attr['is_flv'] ? '===' : '!==';
             $if[] = '$featured_f->type ' . $sign . ' "video/x-flv"';
         }
 
-        if ($if !== []) {
-            return '<?php if(' . implode(' ' . $operator . ' ', $if) . ') : ?>' . $content . '<?php endif; ?>';
+        $test = implode(' ' . $operator . ' ', $if);
+
+        if ($if === []) {
+            return '';
         }
 
-        return $content;
+        return Code::getPHPTemplateBlockCode(
+            FrontendTemplateCode::featuredMediaIf(...),
+            [
+                $test,
+            ],
+            $content,
+            $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaMimeType - O -- featured media MIME Type -->
+      <!ELEMENT tpl:FeaturedMediaMimeType - O -- featured media MIME Type -->
        */
 
     /**
@@ -119,13 +138,16 @@ class FrontendTemplate
      */
     public static function featuredMediaMimeType(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return '<?= ' . sprintf($f, '$featured_f->type') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaMimeType(...),
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaType - O -- featured media type -->
+      <!ELEMENT tpl:FeaturedMediaType - O -- featured media type -->
        */
 
     /**
@@ -133,13 +155,16 @@ class FrontendTemplate
      */
     public static function featuredMediaType(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return '<?= ' . sprintf($f, '$featured_f->media_type') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaType(...),
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaFileName - O -- featured media file name -->
+      <!ELEMENT tpl:FeaturedMediaFileName - O -- featured media file name -->
        */
 
     /**
@@ -147,14 +172,17 @@ class FrontendTemplate
      */
     public static function featuredMediaFileName(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return '<?= ' . sprintf($f, '$featured_f->basename') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaFileName(...),
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaSize - O -- featured media size -->
-      <!ATTLIST tpl:featuredMediaSize
+      <!ELEMENT tpl:FeaturedMediaSize - O -- featured media size -->
+      <!ATTLIST tpl:FeaturedMediaSize
       full    CDATA    #IMPLIED    -- if set, size is rounded to a human-readable value (in KB, MB, GB, TB)
       >
        */
@@ -164,16 +192,19 @@ class FrontendTemplate
      */
     public static function featuredMediaSize(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
-        if (!empty($attr['full'])) {
-            return '<?= ' . sprintf($f, '$featured_f->size') . ' ?>';
-        }
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return '<?= ' . sprintf($f, Files::class . '::size($featured_f->size)') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaFileName(...),
+            [
+                !empty($attr['full']),
+            ],
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaTitle - O -- featured media title -->
+      <!ELEMENT tpl:FeaturedMediaTitle - O -- featured media title -->
        */
 
     /**
@@ -181,13 +212,16 @@ class FrontendTemplate
      */
     public static function featuredMediaTitle(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return '<?= ' . sprintf($f, '$featured_f->media_title') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaTitle(...),
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaThumbnailURL - O -- featured media square thumbnail URL -->
+      <!ELEMENT tpl:FeaturedMediaThumbnailURL - O -- featured media square thumbnail URL -->
        */
 
     /**
@@ -195,23 +229,17 @@ class FrontendTemplate
      */
     public static function featuredMediaThumbnailURL(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return
-        '<?php ' . "\n" .
-        'if (isset($featured_f->media_thumb[\'sq\'])) {' . "\n" .
-        '   $url = $featured_f->media_thumb[\'sq\']);' . "\n" .
-        '   if (substr($url, 0, strlen(App::blog()->host())) === App::blog()->host()) {' . "\n" .
-        '       $url = substr($url, strlen(App::blog()->host()));' . "\n" .
-        '   }' . "\n" .
-        '   echo ' . sprintf($f, '$url') . ';' . "\n" .
-        '}' .
-        '?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaThumbnailURL(...),
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaImageURL - O -- featured media image URL -->
-      <!ATTLIST tpl:featuredMediaImageURL
+      <!ELEMENT tpl:FeaturedMediaImageURL - O -- featured media image URL -->
+      <!ATTLIST tpl:FeaturedMediaImageURL
       size    CDATA    #IMPLIED    -- Image size ('sq','t','s','m','o', original by default or if no thumbnail requested)
        */
 
@@ -220,27 +248,23 @@ class FrontendTemplate
      */
     public static function featuredMediaImageURL(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
+
         if (empty($attr['size'])) {
             return self::featuredMediaURL($attr);
         }
 
-        return
-        '<?php ' . "\n" .
-        'if (isset($featured_f->media_thumb[\'' . $attr['size'] . '\'])) {' . "\n" .
-        '   $url = $featured_f->media_thumb[\'' . $attr['size'] . '\'];' . "\n" .
-        '} else {' . "\n" .
-        '   $url = $featured_f->file_url;' . "\n" .
-        '}' . "\n" .
-        'if (substr($url, 0, strlen(App::blog()->host())) === App::blog()->host()) {' . "\n" .
-        '   $url = substr($url, strlen(App::blog()->host()));' . "\n" .
-        '}' . "\n" .
-        'echo ' . sprintf($f, '$url') . ';' . "\n" .
-        '?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaImageURL(...),
+            [
+                (string) $attr['size'],
+            ],
+            attr: $attr,
+        );
     }
 
     /*dtd
-      <!ELEMENT tpl:featuredMediaURL - O -- featured media URL -->
+      <!ELEMENT tpl:FeaturedMediaURL - O -- featured media URL -->
        */
 
     /**
@@ -248,41 +272,11 @@ class FrontendTemplate
      */
     public static function featuredMediaURL(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        return
-        '<?php ' . "\n" .
-        '$url = $featured_f->file_url;' . "\n" .
-        'if (substr($url, 0, strlen(App::blog()->host())) === App::blog()->host()) {' . "\n" .
-        '   $url = substr($url, strlen(App::blog()->host()));' . "\n" .
-        '}' . "\n" .
-        'echo ' . sprintf($f, '$url') . ';' . "\n" .
-        '?>';
-    }
-
-    private static function top(): string
-    {
-        return <<<TPLFM_TOP
-            <?php
-              if (App::frontend()->context()->posts !== null) {
-                App::frontend()->context()->featured = new ArrayObject(App::media()->getPostMedia(App::frontend()->context()->posts->post_id,null,"featured"));
-                foreach (App::frontend()->context()->featured as \$featured_i => \$featured_f) :
-                  App::frontend()->context()->featured_i = \$featured_i;
-                  App::frontend()->context()->featured_f = \$featured_f;
-                  App::frontend()->context()->file_url = \$featured_f->file_url;  // for Flash/HTML5 Players
-            ?>
-            TPLFM_TOP;
-    }
-
-    private static function end(): string
-    {
-        return <<<TPLFM_END
-            <?php
-                endforeach;
-                App::frontend()->context()->featured = null;
-                unset(App::frontend()->context()->featured_i,App::frontend()->context()->featured_f,App::frontend()->context()->featured_url);
-              }
-            ?>
-            TPLFM_END;
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaURL(...),
+            attr: $attr,
+        );
     }
 }
