@@ -33,7 +33,7 @@ class FrontendTemplateCode
                 App::frontend()->context()->featured_f = $featured_f;
                 App::frontend()->context()->file_url   = $featured_f->file_url;  // for HTML5 Players
                 ?>
-            $content_HTML
+            $_content_HTML
             <?php endforeach;
             App::frontend()->context()->featured = null;
             unset(
