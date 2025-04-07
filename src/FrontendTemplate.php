@@ -64,7 +64,7 @@ class FrontendTemplate
         $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
         /**
-         * Warning: Take care of $featured_f variable used in template code
+         * Warning: Take care of App::frontend()->context()->featured_f variable used in template code
          * Should be renamed here if renamed in FrontendTemplateCode::featuredMediaIf() code.
          */
         $if = [];
@@ -73,31 +73,31 @@ class FrontendTemplate
 
         if (isset($attr['is_image'])) {
             $sign = (bool) $attr['is_image'] ? '' : '!';
-            $if[] = $sign . '$featured_f->media_image';
+            $if[] = $sign . 'App::frontend()->context()->featured_f->media_image';
         }
 
         if (isset($attr['has_thumb'])) {
             $sign = (bool) $attr['has_thumb'] ? '' : '!';
-            $if[] = $sign . 'isset($featured_f->media_thumb[\'sq\'])';
+            $if[] = $sign . 'isset(App::frontend()->context()->featured_f->media_thumb[\'sq\'])';
         }
 
         if (isset($attr['has_size'])) {
-            $if[] = 'isset($featured_f->media_thumb[\'' . $attr['has_size'] . '\'])';
+            $if[] = 'isset(App::frontend()->context()->featured_f->media_thumb[\'' . $attr['has_size'] . '\'])';
         }
 
         if (isset($attr['is_audio'])) {
             $sign = (bool) $attr['is_audio'] ? '===' : '!==';
-            $if[] = '$featured_f->type_prefix ' . $sign . ' "audio"';
+            $if[] = 'App::frontend()->context()->featured_f->type_prefix ' . $sign . ' "audio"';
         }
 
         if (isset($attr['is_video'])) {
             // Since 2.15 .flv media are no more considered as video (Flash is obsolete)
             $sign = (bool) $attr['is_video'] ? '===' : '!==';
-            $test = '$featured_f->type_prefix ' . $sign . ' "video"';
+            $test = 'App::frontend()->context()->featured_f->type_prefix ' . $sign . ' "video"';
             if ($sign === '===') {
-                $test .= ' && $featured_f->type !== "video/x-flv"';
+                $test .= ' && App::frontend()->context()->featured_f->type !== "video/x-flv"';
             } else {
-                $test .= ' || $featured_f->type === "video/x-flv"';
+                $test .= ' || App::frontend()->context()->featured_f->type === "video/x-flv"';
             }
 
             $if[] = $test;
@@ -105,12 +105,12 @@ class FrontendTemplate
 
         if (isset($attr['is_mp3'])) {
             $sign = (bool) $attr['is_mp3'] ? '===' : '!==';
-            $if[] = '$featured_f->type ' . $sign . ' "audio/mpeg3"';
+            $if[] = 'App::frontend()->context()->featured_f->type ' . $sign . ' "audio/mpeg3"';
         }
 
         if (isset($attr['is_flv'])) {
             $sign = (bool) $attr['is_flv'] ? '===' : '!==';
-            $if[] = '$featured_f->type ' . $sign . ' "video/x-flv"';
+            $if[] = 'App::frontend()->context()->featured_f->type ' . $sign . ' "video/x-flv"';
         }
 
         $test = implode(' ' . $operator . ' ', $if);

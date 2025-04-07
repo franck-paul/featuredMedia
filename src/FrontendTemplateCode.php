@@ -48,11 +48,11 @@ class FrontendTemplateCode
      * PHP code for tpl:EntryMyMetaIf block
      */
     public static function featuredMediaIf(
-        string $_test_,
+        string $_test_HTML,
         string $_content_HTML,
     ): void {
         /* @phpstan-ignore-next-line */
-        if (($_test_) === true) : ?>
+        if (($_test_HTML) === true) : ?>
             $_content_HTML
         <?php endif;
     }
@@ -66,9 +66,8 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            $featured_f->type,
+            App::frontend()->context()->featured_f->type,
             $_params_,
             $_tag_
         );
@@ -83,9 +82,8 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            $featured_f->media_type,
+            App::frontend()->context()->featured_f->media_type,
             $_params_,
             $_tag_
         );
@@ -100,9 +98,8 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            $featured_f->basename,
+            App::frontend()->context()->featured_f->basename,
             $_params_,
             $_tag_
         );
@@ -118,9 +115,8 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            $_full_ ? \Dotclear\Helper\File\Files::size($featured_f->size) : $featured_f->size,
+            $_full_ ? \Dotclear\Helper\File\Files::size(App::frontend()->context()->featured_f->size) : App::frontend()->context()->featured_f->size,
             $_params_,
             $_tag_
         );
@@ -135,9 +131,8 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            $featured_f->media_title,
+            App::frontend()->context()->featured_f->media_title,
             $_params_,
             $_tag_
         );
@@ -152,9 +147,8 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
-        if (isset($featured_f->media_thumb['sq'])) {
-            $featured_media_url = $featured_f->media_thumb['sq'];
+        if (isset(App::frontend()->context()->featured_f->media_thumb['sq'])) {
+            $featured_media_url = App::frontend()->context()->featured_f->media_thumb['sq'];
             if (str_starts_with($featured_media_url, (string) App::blog()->host())) {
                 $featured_media_url = substr($featured_media_url, strlen((string) App::blog()->host()));
             }
@@ -177,11 +171,10 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
-        if (isset($featured_f->media_thumb[$_size_])) {
-            $featured_media_url = $featured_f->media_thumb[$_size_];
+        if (isset(App::frontend()->context()->featured_f->media_thumb[$_size_])) {
+            $featured_media_url = App::frontend()->context()->featured_f->media_thumb[$_size_];
         } else {
-            $featured_media_url = $featured_f->file_url;
+            $featured_media_url = App::frontend()->context()->featured_f->file_url;
         }
         if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
             $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
@@ -203,8 +196,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        global $featured_f;
-        $featured_media_url = $featured_f->file_url;
+        $featured_media_url = App::frontend()->context()->featured_f->file_url;
         if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
             $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
         }
