@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="featuredMedia">
     <name>Featured Media</name>
-    <version>6.0.2</version>
+    <version>6.0.3</version>
     <author>Franck Paul</author>
     <desc>Manage featured media for entry</desc>
-    <date>2025-04-07T17:28:03+0200</date>
-    <file>https://github.com/franck-paul/featuredMedia/releases/download/6.0.2/plugin-featuredMedia-6.0.2.zip</file>
+    <date>2025-08-31T01:05:23+0200</date>
+    <file>https://github.com/franck-paul/featuredMedia/releases/download/6.0.3/plugin-featuredMedia-6.0.3.zip</file>
     <da:dcmin>2.34</da:dcmin>
     <da:details>https://open-time.net/?q=featuredMedia</da:details>
     <da:support>https://github.com/franck-paul/featuredMedia</da:support>
