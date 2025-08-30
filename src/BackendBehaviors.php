@@ -151,7 +151,7 @@ class BackendBehaviors
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
                 ->fields([
-                    new Hidden(['post_id'], $post->post_id),
+                    new Hidden(['post_id'], (string) $post->post_id),
                     new Hidden(['media_id'], ''),
                     new Hidden(['link_type'], 'featured'),
                     new Hidden(['remove'], '1'),
