@@ -15,9 +15,9 @@ $this->registerModule(
     'Featured Media',
     'Manage featured media for entry',
     'Franck Paul',
-    '6.0.2',
+    '6.0.3',
     [
-        'date'     => '2025-04-07T17:28:03+0200',
+        'date'     => '2025-08-31T01:05:23+0200',
         'requires' => [
             ['core', '2.34'],
             ['TemplateHelper'],
