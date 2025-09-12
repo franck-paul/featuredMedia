@@ -66,7 +66,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->featured_f->type,
             $_params_,
             $_tag_
@@ -82,7 +82,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->featured_f->media_type,
             $_params_,
             $_tag_
@@ -98,7 +98,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->featured_f->basename,
             $_params_,
             $_tag_
@@ -115,7 +115,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             $_full_ ? \Dotclear\Helper\File\Files::size(App::frontend()->context()->featured_f->size) : App::frontend()->context()->featured_f->size,
             $_params_,
             $_tag_
@@ -131,7 +131,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->featured_f->media_title,
             $_params_,
             $_tag_
@@ -152,7 +152,7 @@ class FrontendTemplateCode
             if (str_starts_with($featured_media_url, (string) App::blog()->host())) {
                 $featured_media_url = substr($featured_media_url, strlen((string) App::blog()->host()));
             }
-            echo \Dotclear\Core\Frontend\Ctx::global_filters(
+            echo App::frontend()->context()::global_filters(
                 $featured_media_url,
                 $_params_,
                 $_tag_
@@ -179,7 +179,7 @@ class FrontendTemplateCode
         if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
             $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
         }
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             $featured_media_url,
             $_params_,
             $_tag_
@@ -200,7 +200,7 @@ class FrontendTemplateCode
         if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
             $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
         }
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             $featured_media_url,
             $_params_,
             $_tag_
