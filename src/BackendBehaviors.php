@@ -17,7 +17,6 @@ namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\Html\Form\Div;
@@ -39,7 +38,7 @@ class BackendBehaviors
     public static function postHeaders(): string
     {
         return
-        Page::jsJson('featuredmedia', ['confirm_remove_featuredmedia' => __('Are you sure you want to remove featured media "%s"?')]) .
+        App::backend()->page()->jsJson('featuredmedia', ['confirm_remove_featuredmedia' => __('Are you sure you want to remove featured media "%s"?')]) .
         My::cssLoad('post.css') .
         My::jsLoad('post.js');
     }
