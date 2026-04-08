@@ -45,13 +45,13 @@ class FrontendTemplate
     /*dtd
       <!ELEMENT tpl:FeaturedMediaIf - - -- Test on featured media fields -->
       <!ATTLIST tpl:FeaturedMediaIf
-      is_image    (0|1)    #IMPLIED    -- test if featured media is an image (value : 1) or not (value : 0)
+      is_image     (0|1)    #IMPLIED    -- test if featured media is an image (value : 1) or not (value : 0)
       has_thumb    (0|1)    #IMPLIED    -- test if featured media has a square thumbnail (value : 1) or not (value : 0)
-      has_size    ('sq','t','s','m')    -- test if featured media has the requested thumbnail size or not
-      is_audio    (0|1)    #IMPLIED    -- test if featured media is an audio file (value : 1) or not (value : 0)
-      is_video    (0|1)    #IMPLIED    -- test if featured media is a video file (value : 1) or not (value : 0)
-      is_mp3        (0|1)    #IMPLIED    -- test if attachment is a mp3 file (value : 1) or not (value : 0)
-      is_flv        (0|1)    #IMPLIED    -- test if attachment is a flv file (value : 1) or not (value : 0)
+      has_size     ('sq','t','s','m')   -- test if featured media has the requested thumbnail size or not
+      is_audio     (0|1)    #IMPLIED    -- test if featured media is an audio file (value : 1) or not (value : 0)
+      is_video     (0|1)    #IMPLIED    -- test if featured media is a video file (value : 1) or not (value : 0)
+      is_mp3       (0|1)    #IMPLIED    -- test if attachment is a mp3 file (value : 1) or not (value : 0)
+      is_flv       (0|1)    #IMPLIED    -- test if attachment is a flv file (value : 1) or not (value : 0)
       >
        */
 
@@ -69,7 +69,7 @@ class FrontendTemplate
          */
         $if = [];
 
-        $operator = isset($attr['operator']) ? Tpl::getOperator($attr['operator']) : '&&';
+        $operator = isset($attr['operator']) && is_string($attr['operator']) ? Tpl::getOperator($attr['operator']) : '&&';
 
         if (isset($attr['is_image'])) {
             $sign = (bool) $attr['is_image'] ? '' : '!';
@@ -81,7 +81,7 @@ class FrontendTemplate
             $if[] = $sign . 'isset(App::frontend()->context()->featured_f->media_thumb[\'sq\'])';
         }
 
-        if (isset($attr['has_size'])) {
+        if (isset($attr['has_size']) && is_string($attr['has_size'])) {
             $if[] = 'isset(App::frontend()->context()->featured_f->media_thumb[\'' . $attr['has_size'] . '\'])';
         }
 
@@ -250,14 +250,14 @@ class FrontendTemplate
     {
         $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
 
-        if (empty($attr['size'])) {
+        if (empty($attr['size']) || !is_string($attr['size'])) {
             return self::featuredMediaURL($attr);
         }
 
         return Code::getPHPTemplateValueCode(
             FrontendTemplateCode::featuredMediaImageURL(...),
             [
-                (string) $attr['size'],
+                $attr['size'],
             ],
             attr: $attr,
         );

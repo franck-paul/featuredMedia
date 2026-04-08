@@ -44,14 +44,15 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<string, mixed>   $main     The main
-     * @param      ArrayObject<string, mixed>   $sidebar  The sidebar
-     * @param      MetaRecord|null              $post     The post
+     * @param      ArrayObject<string, string>                                              $main     The main
+     * @param      ArrayObject<string, array{title: string, items: array<string, string>}>  $sidebar  The sidebar
+     * @param      MetaRecord|null                                                          $post     The post
      */
     public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
         if ($post instanceof MetaRecord) {
-            $post_media = App::media()->getPostMedia((int) $post->post_id, null, 'featured');
+            $post_id    = is_numeric($post_id = $post->post_id) ? (int) $post_id : 0;
+            $post_media = $post_id !== 0 ? App::media()->getPostMedia($post_id, null, 'featured') : [];
             $blocks     = [];
 
             if (empty($post_media)) {
@@ -103,7 +104,7 @@ class BackendBehaviors
                                             (new Link('featuredmedia-' . $media->media_id))
                                                 ->class('featuredmedia-remove')
                                                 ->href(App::backend()->url()->get('admin.post.media', [
-                                                    'post_id'   => $post->post_id,
+                                                    'post_id'   => $post_id,
                                                     'media_id'  => $media->media_id,
                                                     'link_type' => 'featured',
                                                     'remove'    => '1',
@@ -129,7 +130,7 @@ class BackendBehaviors
                             ->items([
                                 (new Link())
                                     ->class('button')
-                                    ->href(App::backend()->url()->get('admin.media', ['post_id' => $post->post_id, 'link_type' => 'featured']))
+                                    ->href(App::backend()->url()->get('admin.media', ['post_id' => $post_id, 'link_type' => 'featured']))
                                     ->text(__('Add a featured media for this entry')),
                             ]) :
                         (new None()),
@@ -146,11 +147,12 @@ class BackendBehaviors
     public static function adminPostAfterForm(?MetaRecord $post): string
     {
         if ($post instanceof MetaRecord) {
+            $post_id = is_numeric($post_id = $post->post_id) ? (int) $post_id : 0;
             echo (new Form('featuredmedia-remove-hide'))
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
                 ->fields([
-                    new Hidden(['post_id'], (string) $post->post_id),
+                    new Hidden(['post_id'], (string) $post_id),
                     new Hidden(['media_id'], ''),
                     new Hidden(['link_type'], 'featured'),
                     new Hidden(['remove'], '1'),

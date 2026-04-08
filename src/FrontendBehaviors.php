@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\featuredMedia;
 
 use ArrayObject;
 use Dotclear\App;
+use Dotclear\Database\MetaRecord;
 use Dotclear\Plugin\TemplateHelper\Code;
 
 class FrontendBehaviors
@@ -51,7 +52,9 @@ class FrontendBehaviors
 
     protected static function tplIfConditionsCode(
     ): void {
-        App::frontend()->context()->posts->countMedia('featured');
+        if (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord) {
+            App::frontend()->context()->posts->countMedia('featured');
+        }
     }
 
     /**
@@ -59,16 +62,19 @@ class FrontendBehaviors
      */
     public static function socialMetaMedia(ArrayObject $media): string
     {
-        if (App::frontend()->context()->posts !== null) {
-            $featured = new ArrayObject(App::media()->getPostMedia((int) App::frontend()->context()->posts->post_id, null, 'featured'));
-            foreach ($featured as $featured_f) {
-                if ($featured_f->media_image) {
-                    $media['img']   = $featured_f->file_url;
-                    $media['alt']   = $featured_f->media_title;
-                    $media['large'] = App::blog()->settings()->get('socialMeta')->photo;
+        if (App::frontend()->context()->posts instanceof MetaRecord) {
+            $post_id = is_numeric($post_id = App::frontend()->context()->posts->post_id) ? (int) $post_id : 0;
+            if ($post_id !== 0) {
+                $featured = new ArrayObject(App::media()->getPostMedia($post_id, null, 'featured'));
+                foreach ($featured as $featured_f) {
+                    if ($featured_f->media_image) {
+                        $media['img']   = $featured_f->file_url;
+                        $media['alt']   = $featured_f->media_title;
+                        $media['large'] = App::blog()->settings()->get('socialMeta')->photo;
 
-                    // First attached image found, return
-                    return '';
+                        // First attached image found, return
+                        return '';
+                    }
                 }
             }
         }

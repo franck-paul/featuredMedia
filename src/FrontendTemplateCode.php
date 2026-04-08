@@ -26,21 +26,25 @@ class FrontendTemplateCode
     public static function featuredMedia(
         string $_content_HTML
     ): void {
-        if (App::frontend()->context()->posts !== null) {
-            App::frontend()->context()->featured = new ArrayObject(App::media()->getPostMedia(App::frontend()->context()->posts->post_id, null, 'featured'));
-            foreach (App::frontend()->context()->featured as $featured_i => $featured_f) :
-                App::frontend()->context()->featured_i = $featured_i;
-                App::frontend()->context()->featured_f = $featured_f;
-                App::frontend()->context()->file_url   = $featured_f->file_url;  // for HTML5 Players
-                ?>
+        if (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord) {
+            $featured_media_post_id = is_numeric($featured_media_post_id = App::frontend()->context()->posts->post_id) ? (int) $featured_media_post_id : 0;
+            if ($featured_media_post_id > 0) {
+                App::frontend()->context()->featured = new ArrayObject(App::media()->getPostMedia($featured_media_post_id, null, 'featured'));
+                foreach (App::frontend()->context()->featured as $featured_i => $featured_f) :
+                    App::frontend()->context()->featured_i = $featured_i;
+                    App::frontend()->context()->featured_f = $featured_f;
+                    App::frontend()->context()->file_url   = $featured_f->file_url;  // for HTML5 Players
+                    ?>
             $_content_HTML
             <?php endforeach;
-            App::frontend()->context()->featured = null;
-            unset(
-                App::frontend()->context()->featured_i,
-                App::frontend()->context()->featured_f,
-                App::frontend()->context()->featured_url
-            );
+                App::frontend()->context()->featured = null;
+                unset(
+                    App::frontend()->context()->featured_i,
+                    App::frontend()->context()->featured_f,
+                    App::frontend()->context()->featured_url
+                );
+            }
+            unset($featured_media_post_id);
         }
     }
 
@@ -66,11 +70,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->featured_f->type,
-            $_params_,
-            $_tag_
-        );
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            echo App::frontend()->context()::global_filters(
+                App::frontend()->context()->featured_f->type,
+                $_params_,
+                $_tag_
+            );
+        }
     }
 
     /**
@@ -82,11 +88,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->featured_f->media_type,
-            $_params_,
-            $_tag_
-        );
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            echo App::frontend()->context()::global_filters(
+                App::frontend()->context()->featured_f->media_type,
+                $_params_,
+                $_tag_
+            );
+        }
     }
 
     /**
@@ -98,11 +106,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->featured_f->basename,
-            $_params_,
-            $_tag_
-        );
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            echo App::frontend()->context()::global_filters(
+                App::frontend()->context()->featured_f->basename,
+                $_params_,
+                $_tag_
+            );
+        }
     }
 
     /**
@@ -115,11 +125,15 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo App::frontend()->context()::global_filters(
-            $_full_ ? \Dotclear\Helper\File\Files::size(App::frontend()->context()->featured_f->size) : App::frontend()->context()->featured_f->size,
-            $_params_,
-            $_tag_
-        );
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            $featured_media_size = App::frontend()->context()->featured_f->size;
+            echo App::frontend()->context()::global_filters(
+                $_full_ ? \Dotclear\Helper\File\Files::size($featured_media_size) : (string) $featured_media_size,
+                $_params_,
+                $_tag_
+            );
+            unset($featured_media_size);
+        }
     }
 
     /**
@@ -131,11 +145,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->featured_f->media_title,
-            $_params_,
-            $_tag_
-        );
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            echo App::frontend()->context()::global_filters(
+                App::frontend()->context()->featured_f->media_title,
+                $_params_,
+                $_tag_
+            );
+        }
     }
 
     /**
@@ -147,7 +163,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        if (isset(App::frontend()->context()->featured_f->media_thumb['sq'])) {
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile && isset(App::frontend()->context()->featured_f->media_thumb['sq'])) {
             $featured_media_url = App::frontend()->context()->featured_f->media_thumb['sq'];
             if (str_starts_with($featured_media_url, (string) App::blog()->host())) {
                 $featured_media_url = substr($featured_media_url, strlen((string) App::blog()->host()));
@@ -171,20 +187,22 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        if (isset(App::frontend()->context()->featured_f->media_thumb[$_size_])) {
-            $featured_media_url = App::frontend()->context()->featured_f->media_thumb[$_size_];
-        } else {
-            $featured_media_url = App::frontend()->context()->featured_f->file_url;
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            if (isset(App::frontend()->context()->featured_f->media_thumb[$_size_])) {
+                $featured_media_url = App::frontend()->context()->featured_f->media_thumb[$_size_];
+            } else {
+                $featured_media_url = App::frontend()->context()->featured_f->file_url;
+            }
+            if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
+                $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
+            }
+            echo App::frontend()->context()::global_filters(
+                $featured_media_url,
+                $_params_,
+                $_tag_
+            );
+            unset($featured_media_url);
         }
-        if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
-            $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
-        }
-        echo App::frontend()->context()::global_filters(
-            $featured_media_url,
-            $_params_,
-            $_tag_
-        );
-        unset($featured_media_url);
     }
 
     /**
@@ -196,15 +214,17 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $featured_media_url = App::frontend()->context()->featured_f->file_url;
-        if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
-            $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            $featured_media_url = App::frontend()->context()->featured_f->file_url;
+            if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
+                $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
+            }
+            echo App::frontend()->context()::global_filters(
+                $featured_media_url,
+                $_params_,
+                $_tag_
+            );
+            unset($featured_media_url);
         }
-        echo App::frontend()->context()::global_filters(
-            $featured_media_url,
-            $_params_,
-            $_tag_
-        );
-        unset($featured_media_url);
     }
 }
