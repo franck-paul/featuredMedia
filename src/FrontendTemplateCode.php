@@ -8,7 +8,7 @@
  *
  * @author Franck Paul and contributors
  *
- * @copyright Franck Paul carnet.franck.paul@gmail.com
+ * @copyright Franck Paul contact@open-time.net
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 declare(strict_types=1);
@@ -148,6 +148,42 @@ class FrontendTemplateCode
         if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
             echo App::frontend()->context()::global_filters(
                 App::frontend()->context()->featured_f->media_title,
+                $_params_,
+                $_tag_
+            );
+        }
+    }
+
+    /**
+     * PHP code for tpl:FeaturedMediaAlt value
+     *
+     * @param      array<int|string, mixed>     $_params_  The parameters
+     */
+    public static function featuredMediaAlt(
+        array $_params_,
+        string $_tag_
+    ): void {
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            echo App::frontend()->context()::global_filters(
+                App::media()->getMediaAlt(App::frontend()->context()->featured_f),
+                $_params_,
+                $_tag_
+            );
+        }
+    }
+
+    /**
+     * PHP code for tpl:FeaturedMediaLegend value
+     *
+     * @param      array<int|string, mixed>     $_params_  The parameters
+     */
+    public static function featuredMediaLegend(
+        array $_params_,
+        string $_tag_
+    ): void {
+        if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
+            echo App::frontend()->context()::global_filters(
+                App::media()->getMediaLegend(App::frontend()->context()->featured_f, no_date_alone: true),
                 $_params_,
                 $_tag_
             );

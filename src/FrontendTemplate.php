@@ -8,7 +8,7 @@
  *
  * @author Franck Paul and contributors
  *
- * @copyright Franck Paul carnet.franck.paul@gmail.com
+ * @copyright Franck Paul contact@open-time.net
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 declare(strict_types=1);
@@ -216,6 +216,40 @@ class FrontendTemplate
 
         return Code::getPHPTemplateValueCode(
             FrontendTemplateCode::featuredMediaTitle(...),
+            attr: $attr,
+        );
+    }
+
+    /*dtd
+      <!ELEMENT tpl:FeaturedMediaAlt - O -- featured media alt -->
+       */
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     */
+    public static function featuredMediaAlt(array|ArrayObject $attr): string
+    {
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
+
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaAlt(...),
+            attr: $attr,
+        );
+    }
+
+    /*dtd
+      <!ELEMENT tpl:FeaturedMediaLegend - O -- featured media legend -->
+       */
+
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     */
+    public static function featuredMediaLegend(array|ArrayObject $attr): string
+    {
+        $attr = $attr instanceof ArrayObject ? $attr : new ArrayObject($attr);
+
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::featuredMediaLegend(...),
             attr: $attr,
         );
     }

@@ -8,7 +8,7 @@
  *
  * @author Franck Paul and contributors
  *
- * @copyright Franck Paul carnet.franck.paul@gmail.com
+ * @copyright Franck Paul contact@open-time.net
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 declare(strict_types=1);
@@ -39,6 +39,8 @@ class Frontend
         App::frontend()->template()->addValue('FeaturedMediaFileName', FrontendTemplate::featuredMediaFileName(...));
         App::frontend()->template()->addValue('FeaturedMediaSize', FrontendTemplate::featuredMediaSize(...));
         App::frontend()->template()->addValue('FeaturedMediaTitle', FrontendTemplate::featuredMediaTitle(...));
+        App::frontend()->template()->addValue('FeaturedMediaAlt', FrontendTemplate::featuredMediaAlt(...));
+        App::frontend()->template()->addValue('FeaturedMediaLegend', FrontendTemplate::featuredMediaLegend(...));
         App::frontend()->template()->addValue('FeaturedMediaThumbnailURL', FrontendTemplate::featuredMediaThumbnailURL(...));
         App::frontend()->template()->addValue('FeaturedMediaImageURL', FrontendTemplate::featuredMediaImageURL(...));
         App::frontend()->template()->addValue('FeaturedMediaURL', FrontendTemplate::featuredMediaURL(...));
