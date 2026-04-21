@@ -24,7 +24,10 @@ Pour l'affichage de ce média à la une, il faut utiliser la ou les balises ci-d
       {{tpl:include src="_video_player.html"}}
     </tpl:FeaturedMediaIf>
     <tpl:FeaturedMediaIf is_image="1">
-      <img src="{{tpl:FeaturedMediaImageURL size="m"}}" alt="{{tpl:FeaturedMediaTitle}}" />
+      <figure>
+        <img src="{{tpl:FeaturedMediaImageURL size="m"}}" alt="{{tpl:FeaturedMediaAlt}}" />
+        <figcaption>{{tpl:FeaturedMediaLegend}}</figcaption>
+      </figure>
     </tpl:FeaturedMediaIf>
   </div>
 </tpl:FeaturedMedia>
