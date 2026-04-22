@@ -92,6 +92,14 @@ Retourne la taille du fichier média. Si l'attribut full="1" est spécifié alor
 
 Retourne le titre du média.
 
+### Valeur {{tpl:featuredMediaAlt}}
+
+Retourne le texte alternatif du média, ou le titre s'il n'y en a pas.
+
+### Valeur {{tpl:featuredMediaLegend}}
+
+Retourne la légende du média (composée en fonction des réglages du blog), ou la description si le réglage côté blog est vide.
+
 ### Valeur {{tpl:featuredMediaThumbnailURL}}
 
 Retourne l'URL de la miniature carrée (square) du média, si elle existe.
