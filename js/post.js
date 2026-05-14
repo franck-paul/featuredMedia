@@ -10,7 +10,7 @@ dotclear.ready(() => {
     remove.addEventListener('click', (event) => {
       remove.href = '';
       const media_title = remove.parentNode.parentNode.querySelector('li > a')?.getAttribute('title');
-      if (window.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', media_title))) {
+      if (globalThis.confirm(dotclear.msg.confirm_remove_featuredmedia.replace('%s', media_title))) {
         const form = document.getElementById('featuredmedia-remove-hide');
         if (form) {
           // Extract media ID
