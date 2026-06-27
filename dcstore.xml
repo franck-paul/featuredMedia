@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="featuredMedia">
     <name>Featured Media</name>
-    <version>7.4</version>
+    <version>7.5</version>
     <author>Franck Paul</author>
     <desc>Manage featured media for entry</desc>
-    <date>2026-04-21T14:29:03+0200</date>
-    <file>https://github.com/franck-paul/featuredMedia/releases/download/7.4/plugin-featuredMedia-7.4.zip</file>
+    <date>2026-06-27T11:54:59+0200</date>
+    <file>https://github.com/franck-paul/featuredMedia/releases/download/7.5/plugin-featuredMedia-7.5.zip</file>
     <da:dcmin>2.36</da:dcmin>
     <da:details>https://dotclear.org/plugin/detail/featuredMedia</da:details>
     <da:support>https://github.com/franck-paul/featuredMedia</da:support>
