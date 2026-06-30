@@ -27,7 +27,7 @@ class FrontendTemplateCode
         string $_content_HTML
     ): void {
         if (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord) {
-            $featured_media_post_id = is_numeric($featured_media_post_id = App::frontend()->context()->posts->post_id) ? (int) $featured_media_post_id : 0;
+            $featured_media_post_id = App::frontend()->context()->posts->intField('post_id');
             if ($featured_media_post_id > 0) {
                 App::frontend()->context()->featured = new ArrayObject(App::media()->getPostMedia($featured_media_post_id, null, 'featured'));
                 foreach (App::frontend()->context()->featured as $featured_i => $featured_f) :

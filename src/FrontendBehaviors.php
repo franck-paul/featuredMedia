@@ -61,7 +61,7 @@ class FrontendBehaviors
     public static function socialMetaMedia(ArrayObject $media): string
     {
         if (App::frontend()->context()->posts instanceof MetaRecord) {
-            $post_id = is_numeric($post_id = App::frontend()->context()->posts->post_id) ? (int) $post_id : 0;
+            $post_id = App::frontend()->context()->posts->intField('post_id');
             if ($post_id !== 0) {
                 $featured = new ArrayObject(App::media()->getPostMedia($post_id, null, 'featured'));
                 foreach ($featured as $featured_f) {

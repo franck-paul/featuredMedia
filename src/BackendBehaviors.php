@@ -51,7 +51,7 @@ class BackendBehaviors
     public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
         if ($post instanceof MetaRecord) {
-            $post_id    = is_numeric($post_id = $post->post_id) ? (int) $post_id : 0;
+            $post_id    = $post->intField('post_id');
             $post_media = $post_id !== 0 ? App::media()->getPostMedia($post_id, null, 'featured') : [];
             $blocks     = [];
 
@@ -147,7 +147,7 @@ class BackendBehaviors
     public static function adminPostAfterForm(?MetaRecord $post): string
     {
         if ($post instanceof MetaRecord) {
-            $post_id = is_numeric($post_id = $post->post_id) ? (int) $post_id : 0;
+            $post_id = $post->intField('post_id');
             echo (new Form('featuredmedia-remove-hide'))
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
