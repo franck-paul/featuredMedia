@@ -68,7 +68,7 @@ class FrontendBehaviors
                     if ($featured_f->media_image) {
                         $media['img']   = $featured_f->file_url;
                         $media['alt']   = $featured_f->media_title;
-                        $media['large'] = App::blog()->settings()->get('socialMeta')->photo;
+                        $media['large'] = App::blog()->settings()->get('socialMeta')->getBool('photo');
 
                         // First attached image found, return
                         return '';
