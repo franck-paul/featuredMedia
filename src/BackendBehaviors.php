@@ -46,12 +46,12 @@ class BackendBehaviors
     /**
      * @param      ArrayObject<string, string>                                              $main     The main
      * @param      ArrayObject<string, array{title: string, items: array<string, string>}>  $sidebar  The sidebar
-     * @param      MetaRecord|null                                                          $post     The post
+     * @param      MetaRecord|null                                                          $metaRecord     The post
      */
-    public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
+    public static function adminPostFormItems(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $metaRecord): string
     {
-        if ($post instanceof MetaRecord) {
-            $post_id    = $post->intField('post_id');
+        if ($metaRecord instanceof MetaRecord) {
+            $post_id    = $metaRecord->intField('post_id');
             $post_media = $post_id !== 0 ? App::media()->getPostMedia($post_id, null, 'featured') : [];
             $blocks     = [];
 
@@ -60,9 +60,9 @@ class BackendBehaviors
                     ->class(['form-note', 's-featuredmedia'])
                     ->text(__('No featured media.'));
             } else {
-                foreach ($post_media as $media) {
-                    $ftitle    = $media->media_title;
-                    $media_url = App::backend()->url()->get('admin.media.item', ['id' => $media->media_id]);
+                foreach ($post_media as $post_medium) {
+                    $ftitle    = $post_medium->media_title;
+                    $media_url = App::backend()->url()->get('admin.media.item', ['id' => $post_medium->media_id]);
                     if (strlen((string) $ftitle) > 18) {
                         $ftitle = substr((string) $ftitle, 0, 17) . '…';
                     }
@@ -74,9 +74,9 @@ class BackendBehaviors
                                 ->class('media-icon')
                                 ->href($media_url)
                                 ->items([
-                                    (new Img($media->media_icon))
+                                    (new Img($post_medium->media_icon))
                                         ->alt('')
-                                        ->title($media->basename),
+                                        ->title($post_medium->basename),
                                 ]),
                             (new Ul())
                                 ->items([
@@ -85,27 +85,27 @@ class BackendBehaviors
                                             (new Link())
                                                 ->class('media-link')
                                                 ->href($media_url)
-                                                ->title($media->basename)
+                                                ->title($post_medium->basename)
                                                 ->text($ftitle),
                                         ]),
                                     (new Li())
-                                        ->text($media->media_dtstr),
+                                        ->text($post_medium->media_dtstr),
                                     (new Li())
                                         ->separator(' - ')
                                         ->items([
-                                            (new Text(null, Files::size($media->size))),
+                                            (new Text(null, Files::size($post_medium->size))),
                                             (new Link())
-                                                ->href($media->file_url)
+                                                ->href($post_medium->file_url)
                                                 ->text(__('open')),
                                         ]),
                                     (new Li())
                                         ->class('media-action')
                                         ->items([
-                                            (new Link('featuredmedia-' . $media->media_id))
+                                            (new Link('featuredmedia-' . $post_medium->media_id))
                                                 ->class('featuredmedia-remove')
                                                 ->href(App::backend()->url()->get('admin.post.media', [
                                                     'post_id'   => $post_id,
-                                                    'media_id'  => $media->media_id,
+                                                    'media_id'  => $post_medium->media_id,
                                                     'link_type' => 'featured',
                                                     'remove'    => '1',
                                                 ]))
@@ -142,12 +142,12 @@ class BackendBehaviors
     }
 
     /**
-     * @param      MetaRecord|null  $post   The post
+     * @param      MetaRecord|null  $metaRecord   The post
      */
-    public static function adminPostAfterForm(?MetaRecord $post): string
+    public static function adminPostAfterForm(?MetaRecord $metaRecord): string
     {
-        if ($post instanceof MetaRecord) {
-            $post_id = $post->intField('post_id');
+        if ($metaRecord instanceof MetaRecord) {
+            $post_id = $metaRecord->intField('post_id');
             echo (new Form('featuredmedia-remove-hide'))
                 ->action(App::backend()->url()->get('admin.post.media'))
                 ->method('post')
@@ -165,11 +165,11 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<int, mixed>  $filters  The filters
+     * @param      ArrayObject<int, mixed>  $arrayObject  The filters
      */
-    public static function adminPostFilter(ArrayObject $filters): string
+    public static function adminPostFilter(ArrayObject $arrayObject): string
     {
-        $filters->append((new Filter('featuredmedia'))
+        $arrayObject->append((new Filter('featuredmedia'))
             ->param('media')
             ->param('link_type', 'featured')
             ->title(__('Featured media:'))

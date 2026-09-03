@@ -56,9 +56,9 @@ class FrontendBehaviors
     }
 
     /**
-     * @param      ArrayObject<string, mixed>  $media  The media
+     * @param      ArrayObject<string, mixed>  $arrayObject  The media
      */
-    public static function socialMetaMedia(ArrayObject $media): string
+    public static function socialMetaMedia(ArrayObject $arrayObject): string
     {
         if (App::frontend()->context()->posts instanceof MetaRecord) {
             $post_id = App::frontend()->context()->posts->intField('post_id');
@@ -66,9 +66,9 @@ class FrontendBehaviors
                 $featured = new ArrayObject(App::media()->getPostMedia($post_id, null, 'featured'));
                 foreach ($featured as $featured_f) {
                     if ($featured_f->media_image) {
-                        $media['img']   = $featured_f->file_url;
-                        $media['alt']   = $featured_f->media_title;
-                        $media['large'] = App::blog()->settings()->get('socialMeta')->getBool('photo');
+                        $arrayObject['img']   = $featured_f->file_url;
+                        $arrayObject['alt']   = $featured_f->media_title;
+                        $arrayObject['large'] = App::blog()->settings()->get('socialMeta')->getBool('photo');
 
                         // First attached image found, return
                         return '';
