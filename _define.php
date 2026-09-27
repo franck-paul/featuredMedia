@@ -18,9 +18,9 @@ if (isset($this) && is_object($this) && method_exists($this, 'registerModule') &
         'Featured Media',
         'Manage featured media for entry',
         'Franck Paul',
-        '8.0',
+        '8.0.1',
         [
-            'date'     => '2026-08-03T09:56:51+0200',
+            'date'     => '2026-09-27T08:55:09+0200',
             'requires' => [
                 ['core', '2.39'],
                 ['TemplateHelper'],
