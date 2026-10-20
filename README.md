@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/franck-paul/featuredMedia)](https://github.com/franck-paul/featuredMedia/releases)
 [![Date](https://img.shields.io/github/release-date/franck-paul/featuredMedia)](https://github.com/franck-paul/featuredMedia/releases)
 [![Issues](https://img.shields.io/github/issues/franck-paul/featuredMedia)](https://github.com/franck-paul/featuredMedia/issues)
-[![License](https://img.shields.io/github/license/franck-paul/featuredMedia)](https://github.com/franck-paul/featuredMedia/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/franck-paul/featuredMedia)](https://github.com/franck-paul/featuredMedia/blob/main/LICENSE)
 
 ---
 
