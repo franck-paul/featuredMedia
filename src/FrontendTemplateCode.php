@@ -201,8 +201,8 @@ class FrontendTemplateCode
     ): void {
         if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile && isset(App::frontend()->context()->featured_f->media_thumb['sq'])) {
             $featured_media_url = App::frontend()->context()->featured_f->media_thumb['sq'];
-            if (str_starts_with($featured_media_url, (string) App::blog()->host())) {
-                $featured_media_url = substr($featured_media_url, strlen((string) App::blog()->host()));
+            if (str_starts_with($featured_media_url, App::blog()->host())) {
+                $featured_media_url = substr($featured_media_url, strlen(App::blog()->host()));
             }
             echo App::frontend()->context()::global_filters(
                 $featured_media_url,
@@ -229,8 +229,8 @@ class FrontendTemplateCode
             } else {
                 $featured_media_url = App::frontend()->context()->featured_f->file_url;
             }
-            if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
-                $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
+            if (str_starts_with($featured_media_url, App::blog()->host())) {
+                $featured_media_url = substr($featured_media_url, strlen(App::blog()->host()));
             }
             echo App::frontend()->context()::global_filters(
                 $featured_media_url,
@@ -252,8 +252,8 @@ class FrontendTemplateCode
     ): void {
         if (App::frontend()->context()->featured_f instanceof \Dotclear\Helper\File\MediaFile) {
             $featured_media_url = App::frontend()->context()->featured_f->file_url;
-            if (str_starts_with((string) $featured_media_url, (string) App::blog()->host())) {
-                $featured_media_url = substr((string) $featured_media_url, strlen((string) App::blog()->host()));
+            if (str_starts_with($featured_media_url, App::blog()->host())) {
+                $featured_media_url = substr($featured_media_url, strlen(App::blog()->host()));
             }
             echo App::frontend()->context()::global_filters(
                 $featured_media_url,
