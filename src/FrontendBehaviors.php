@@ -36,7 +36,7 @@ class FrontendBehaviors
      */
     public static function tplIfConditions($tag, $attr, $content, $if): string
     {
-        if ($tag == 'EntryIf' && isset($attr['has_featured_media'])) {
+        if ($tag === 'EntryIf' && isset($attr['has_featured_media'])) {
             $sign = (bool) $attr['has_featured_media'] ? '' : '!';
             $if->append($sign . rtrim(Code::getPHPCode(
                 self::tplIfConditionsCode(...),
