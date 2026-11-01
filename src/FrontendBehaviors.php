@@ -52,7 +52,7 @@ class FrontendBehaviors
 
     protected static function tplIfConditionsCode(
     ): void {
-        (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord && App::frontend()->context()->posts->countMedia('featured'));
+        (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord && App::frontend()->context()->posts->countMedia('featured') > 0);
     }
 
     /**
